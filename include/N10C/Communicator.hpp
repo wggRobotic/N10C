@@ -20,15 +20,19 @@ public:
 
 private:
     void timer_callback();
-    void primary_img_topic_callback();
-    void secondary_img_topic_callback();
-    void motion_img_topic_callback();
+    void primary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
+    void secondary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
+    void motion_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
+    void barcode_topic_callback(const std_msgs::msg::String::ConstSharedPtr &msg);
 
     rclcpp::TimerBase::SharedPtr timer_;
+    
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr velocityPublisher;
+
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr primaryImgSubscriber;
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr secondaryImgSubscriber;
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr motionImgSubscriber;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr barCodeSubscriber;
     size_t count_;
 };
 
