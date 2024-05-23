@@ -9,7 +9,7 @@
 #include <std_srvs/srv/set_bool.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <geometry_msgs/msg/twist.hpp>
-#include <N10C/Communicator.hpp>
+#include <N10C/communicator.hpp>
 
 using namespace std::chrono_literals;
 

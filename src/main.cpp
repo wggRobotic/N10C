@@ -2,7 +2,7 @@
 #include <functional>
 #include <memory>
 #include <string>
-#include <N10C/Communicator.hpp>
+#include <N10C/communicator.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/compressed_image.hpp>
 
