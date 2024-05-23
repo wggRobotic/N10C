@@ -1,14 +1,3 @@
-#include <chrono>
-#include <functional>
-#include <memory>
-#include <sensor_msgs/msg/compressed_image.hpp>
-#include <string>
-
-#include <image_transport/image_transport.hpp>
-#include <rclcpp/rclcpp.hpp>
-#include <std_srvs/srv/set_bool.hpp>
-#include <std_msgs/msg/string.hpp>
-#include <geometry_msgs/msg/twist.hpp>
 #include <N10C/communicator.hpp>
 
 using namespace std::chrono_literals;
@@ -37,7 +26,7 @@ std::string Communicator::enableMotors(bool status)
     if (!rclcpp::ok())
     {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the sevice. Exiting.");
-      return;
+      return {};
     }
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "serice not available, waiting again ...");
   }

@@ -1,4 +1,4 @@
 cd ../..
 colcon build --packages-select n10c
-source ~/.bashrc
+source install/local_setup.sh
 ros2 run n10c n10c
