@@ -1,13 +1,12 @@
 #include <chrono>
 #include <functional>
 #include <memory>
-#include <sensor_msgs/msg/compressed_image.hpp>
 #include <string>
+#include <N10C/Communicator.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/compressed_image.hpp>
 
-#include "rclcpp/rclcpp.hpp"
-#include "Communicator.hpp"
-
-int main(int argc, char * argv[])
+int main(const int argc, const char **argv)
 {
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<Communicator>());
