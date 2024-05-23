@@ -19,8 +19,9 @@
                 "/opt/ros/humble/include/cv_bridge",
                 "${workspaceFolder}/include",
                 "/opt/ros/humble/include/image_transport",
-                "/opt/ros/humble/include",
-                "/opt/ros/humble/include/geometry_msgs"
+                "/opt/ros/humble/include/**",
+                "/opt/ros/humble/include/geometry_msgs",
+                "/opt/ros/humble/include/std_srvs"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang-14",

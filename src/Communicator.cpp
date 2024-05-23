@@ -46,7 +46,7 @@ class Communicator : public rclcpp::Node
 
     }
 
-    void enableMotors(bool status){
+    std::string enableMotors(bool status){
       auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
       request->data = status;
       while(!enableMotor->wait_for_service(1s)){
@@ -57,7 +57,7 @@ class Communicator : public rclcpp::Node
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"),"serice not available, waiting again ...");
       }
       auto result = enableMotor->async_send_request(request);
-      result.get()->message;
+      return result.get()->message;
     } 
 
   private:
