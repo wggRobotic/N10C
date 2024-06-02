@@ -1,18 +1,18 @@
 #pragma once
 
-#include <guitar/application.hpp>
 #include <N10C/communicator.hpp>
+#include <guitar/application.hpp>
+#include <rclcpp/executors/multi_threaded_executor.hpp>
 
-class Davinci
-    : public guitar::Application
+class Davinci : public guitar::Application
 {
 public:
-    Davinci(int argc, const char **argv);
+  Davinci(int argc, const char **argv);
 
 protected:
-    void OnFrame() override;
+  void OnFrame() override;
 
 private:
-    std::shared_ptr<Communicator> m_Communicator;
-    rclcpp::executors::SingleThreadedExecutor m_Executor;
+  std::shared_ptr<Communicator> m_Communicator;
+  rclcpp::executors::MultiThreadedExecutor m_Executor;
 };

@@ -2,8 +2,7 @@
 
 using namespace std::chrono_literals;
 
-Communicator::Communicator()
-    : Node("n10c"), m_Count(0)
+Communicator::Communicator() : Node("n10c"), m_Count(0)
 {
   m_VelocityPublisher = this->create_publisher<geometry_msgs::msg::Twist>("n10/cmd_vel", 10);
 
@@ -34,21 +33,13 @@ std::string Communicator::enableMotors(bool status)
   return result.get()->message;
 }
 
-void Communicator::primary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &)
-{
-}
+void Communicator::primary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &) {}
 
-void Communicator::secondary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &)
-{
-}
+void Communicator::secondary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &) {}
 
-void Communicator::motion_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &)
-{
-}
+void Communicator::motion_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &) {}
 
-void Communicator::barcode_topic_callback(const std_msgs::msg::String::ConstSharedPtr &)
-{
-}
+void Communicator::barcode_topic_callback(const std_msgs::msg::String::ConstSharedPtr &) {}
 
 void Communicator::timer_callback()
 {
