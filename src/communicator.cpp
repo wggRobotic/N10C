@@ -34,27 +34,27 @@ std::string Communicator::enableMotors(bool status)
   return result.get()->message;
 }
 
-void Communicator::primary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg)
+void Communicator::primary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &)
 {
 }
 
-void Communicator::secondary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg)
+void Communicator::secondary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &)
 {
 }
 
-void Communicator::motion_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg)
+void Communicator::motion_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &)
 {
 }
 
-void Communicator::barcode_topic_callback(const std_msgs::msg::String::ConstSharedPtr &msg)
+void Communicator::barcode_topic_callback(const std_msgs::msg::String::ConstSharedPtr &)
 {
 }
 
 void Communicator::timer_callback()
 {
   auto message = geometry_msgs::msg::Twist();
-  message.linear.x;
-  message.linear.y;
-  message.angular.z;
+  (void)message.linear.x;
+  (void)message.linear.y;
+  (void)message.angular.z;
   m_VelocityPublisher->publish(message);
 }

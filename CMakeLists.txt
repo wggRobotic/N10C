@@ -27,7 +27,7 @@ include(FetchContent)
 FetchContent_Declare(
   GUItar
   GIT_REPOSITORY https://github.com/Scriptor25/GUItar.git
-  GIT_TAG        main
+  GIT_TAG        dev
 )
 FetchContent_MakeAvailable(GUItar)
 
@@ -49,6 +49,10 @@ target_link_libraries(n10c PUBLIC GUItar)
 
 install(
   TARGETS n10c
+  DESTINATION lib/${PROJECT_NAME}
+)
+install(
+  DIRECTORY res
   DESTINATION lib/${PROJECT_NAME}
 )
 
