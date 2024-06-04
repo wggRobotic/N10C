@@ -10,9 +10,9 @@ public:
   Davinci(int argc, const char **argv);
 
 protected:
-  void OnFrame() override;
+  void OnStart() override;
 
 private:
   std::shared_ptr<Communicator> m_Communicator;
-  rclcpp::executors::MultiThreadedExecutor m_Executor;
+  std::thread m_Thread;
 };

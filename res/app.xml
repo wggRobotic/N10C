@@ -4,4 +4,5 @@
      version="0.0.1"
      layout="main"
      width="800"
-     height="600"/>
+     height="600"
+     viewports="true"/>

@@ -4,8 +4,11 @@
 
 Davinci::Davinci(int argc, const char **argv) : Application(argc, argv), m_Communicator(std::make_shared<Communicator>())
 {
-  m_Executor.add_node(m_Communicator);
+  m_Thread = std::thread([this]() { rclcpp::spin(m_Communicator); });
+}
 
+void Davinci::OnStart()
+{
   Events().Register(
       "on_key", this,
       [this](const guitar::EventPayload *pPayload) -> bool
@@ -26,5 +29,3 @@ Davinci::Davinci(int argc, const char **argv) : Application(argc, argv), m_Commu
         return false;
       });
 }
-
-void Davinci::OnFrame() { m_Executor.spin_once(10ms); }

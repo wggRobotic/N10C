@@ -48,4 +48,6 @@ void Communicator::timer_callback()
   (void)message.linear.y;
   (void)message.angular.z;
   m_VelocityPublisher->publish(message);
+
+  std::cout << "Timer" << std::endl;
 }
