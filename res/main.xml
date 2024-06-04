@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout xmlns="ImGuiXML" id="main">
-    <dockspace/>
-    <demo/>
-    <window name="Test">
-        <text>Hello World!</text>
-        <separatorText>Buttons</separatorText>
-        <button action="test">Press me!</button>
-        <button>No Action</button>
-        <button action="open_demo">Open Demo</button>
-        <separatorText>Image</separatorText>
-        <image src="logo" type="resource"/>
-        <image src="img_test" type="event"/>
+    <dockspace />
+    <window name="Kamera">
+        <combo label="Kamera Wählen" preview="$selected_camera">
+            <custom event="select_camera" />
+        </combo>
+        <image src="camera" type="event" />
     </window>
+    <window name="Greifarm" />
+    <window name="Sensoren" />
+    <window name="Infobereich" />
+    <window name="Gandalf" />
 </layout>

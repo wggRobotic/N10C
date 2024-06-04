@@ -28,4 +28,27 @@ void Davinci::OnStart()
 
         return false;
       });
+
+  Events().Register(
+      "selected_camera", this,
+      [this](const guitar::EventPayload *pPayload) -> bool
+      {
+        const auto &payload = *(guitar::StringPayload *)pPayload;
+        payload.Result = m_Cameras[m_SelectedCamera];
+        return true;
+      });
+  Events().Register(
+      "select_camera", this,
+      [this](const guitar::EventPayload *) -> bool
+      {
+        for (int i = 0; i < m_Cameras.size(); ++i)
+        {
+          ImGui::PushID(i);
+          const bool selected = i == m_SelectedCamera;
+          if (ImGui::Selectable(m_Cameras[i].c_str(), selected)) m_SelectedCamera = i;
+          if (selected) ImGui::SetItemDefaultFocus();
+          ImGui::PopID();
+        }
+        return true;
+      });
 }
