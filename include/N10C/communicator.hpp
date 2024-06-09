@@ -19,16 +19,16 @@ using namespace std::chrono_literals;
 class Communicator : public rclcpp::Node
 {
 public:
-  Communicator();
+  explicit Communicator(class Davinci &davinci);
 
-  std::string enableMotors(bool status);
+  std::string EnableMotors(bool status);
 
 private:
-  void timer_callback();
-  void primary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
-  void secondary_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
-  void motion_img_topic_callback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
-  void barcode_topic_callback(const std_msgs::msg::String::ConstSharedPtr &msg);
+  void TimerCallback();
+  void PrimaryImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
+  void SecondaryImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
+  void MotionImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
+  void BarcodeCallback(const std_msgs::msg::String::ConstSharedPtr &msg);
 
   rclcpp::TimerBase::SharedPtr m_Timer;
 
@@ -41,6 +41,8 @@ private:
   std::shared_ptr<rclcpp::Client<std_srvs::srv::SetBool>> m_EnableMotor;
 
   size_t m_Count;
+
+  class Davinci &m_Davinci;
 };
 
 #endif // COMMUNICATOR_HPP

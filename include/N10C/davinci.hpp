@@ -9,8 +9,11 @@ class Davinci : public guitar::Application
 public:
   Davinci(int argc, const char **argv);
 
+  void SetPrimaryImage(const std::vector<unsigned char> &data, uint32_t width, uint32_t height, uint32_t step, const std::string &encoding, uint8_t is_bigendian);
+
 protected:
   void OnStart() override;
+  void OnImGui() override;
 
 private:
   // ROS
@@ -19,5 +22,13 @@ private:
 
   // Cameras
   int m_SelectedCamera = 0;
-  const std::vector<std::string> m_Cameras = { "Vorne", "Hinten", "Thermal", "Tiefe" };
+  const std::vector<std::string> m_Cameras = { "Front", "Rear", "Thermal", "Depth" };
+
+  // Joysticks
+  int m_SelectedJoystick = -1;
+
+  // Images
+  guitar::Image m_PrimaryImage;
+  guitar::Image m_SecondaryImage;
+  guitar::Image m_MotionImage;
 };
