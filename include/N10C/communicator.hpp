@@ -25,17 +25,17 @@ public:
 
 private:
   void TimerCallback();
-  void PrimaryImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
-  void SecondaryImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
-  void MotionImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg);
+  void PrimaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg);
+  void SecondaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg);
+  void MotionImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg);
   void BarcodeCallback(const std_msgs::msg::String::ConstSharedPtr &msg);
 
   rclcpp::TimerBase::SharedPtr m_Timer;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr m_VelocityPublisher;
-  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr m_PrimaryImgSubscriber;
-  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr m_SecondaryImgSubscriber;
-  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr m_MotionImgSubscriber;
+  image_transport::Subscriber m_PrimaryImgSubscriber;
+  image_transport::Subscriber m_SecondaryImgSubscriber;
+  image_transport::Subscriber m_MotionImgSubscriber;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr m_BarCodeSubscriber;
 
   std::shared_ptr<rclcpp::Client<std_srvs::srv::SetBool>> m_EnableMotor;

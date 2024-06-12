@@ -7,9 +7,11 @@ Communicator::Communicator(Davinci &davinci) : Node("n10c"), m_Count(0), m_Davin
 {
   m_VelocityPublisher = this->create_publisher<geometry_msgs::msg::Twist>("n10/cmd_vel", 10);
 
-  m_PrimaryImgSubscriber = this->create_subscription<sensor_msgs::msg::Image>("/n10/test", 10, std::bind(&Communicator::PrimaryImageCallback, this, std::placeholders::_1));
-  m_SecondaryImgSubscriber = this->create_subscription<sensor_msgs::msg::Image>("/n10/test", 10, std::bind(&Communicator::SecondaryImageCallback, this, std::placeholders::_1));
-  m_MotionImgSubscriber = this->create_subscription<sensor_msgs::msg::Image>("/n10/test", 10, std::bind(&Communicator::MotionImageCallback, this, std::placeholders::_1));
+  image_transport::ImageTransport it(shared_from_this());
+
+  m_PrimaryImgSubscriber = it.subscribe("/n10/camera/front", 10, Communicator::PrimaryImageCallback, this);
+  m_SecondaryImgSubscriber = it.subscribe("/n10/camera/rear", 10, Communicator::SecondaryImageCallback, this);
+  m_MotionImgSubscriber = it.subscribe("/n10/camera/motion", 10, Communicator::MotionImageCallback, this);
 
   m_BarCodeSubscriber = this->create_subscription<std_msgs::msg::String>("/n10/barcode", 10, std::bind(&Communicator::BarcodeCallback, this, std::placeholders::_1));
 
@@ -34,14 +36,14 @@ std::string Communicator::EnableMotors(bool status)
   return result.get()->message;
 }
 
-void Communicator::PrimaryImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &msg)
+void Communicator::PrimaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg)
 {
   m_Davinci.SetPrimaryImage(msg->data, msg->width, msg->height, msg->step, msg->encoding, msg->is_bigendian);
 }
 
-void Communicator::SecondaryImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &) {}
+void Communicator::SecondaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &) {}
 
-void Communicator::MotionImageCallback(const sensor_msgs::msg::Image::ConstSharedPtr &) {}
+void Communicator::MotionImageCallback(const image_transport::ImageTransport::ImageConstPtr &) {}
 
 void Communicator::BarcodeCallback(const std_msgs::msg::String::ConstSharedPtr &) {}
 
