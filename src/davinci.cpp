@@ -167,11 +167,25 @@ void Davinci::OnFrame()
   if (joystick.Name.empty())
   {
     // Keyboard
+    m_Communicator->Twist().linear.y = (Input().GetKey(GLFW_KEY_D) - Input().GetKey(GLFW_KEY_A)) * 10;
+    m_Communicator->Twist().linear.x = (Input().GetKey(GLFW_KEY_W) - Input().GetKey(GLFW_KEY_S)) * 10;
+    m_Communicator->Twist().angular.z = (Input().GetKey(GLFW_KEY_Q) - Input().GetKey(GLFW_KEY_E));
   }
   else
   {
     // Joystick
-    joystick.Dump();
+    // joystick.Dump();
+    // linear left and right
+    m_Communicator->Twist().linear.y = joystick.Axes[0] * 10;
+    // forward backward
+    m_Communicator->Twist().linear.x = joystick.Axes[1] * 10;
+    // angular
+    //  left and right
+    m_Communicator->Twist().angular.z = joystick.Axes[2];
+
+    if (joystick.Buttons[0]) m_Communicator->EnableMotors(true);
+    else if (joystick.Buttons[1])
+      m_Communicator->EnableMotors(false);
   }
 }
 

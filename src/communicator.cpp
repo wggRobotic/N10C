@@ -22,18 +22,29 @@ std::string Communicator::EnableMotors(bool status)
 {
   auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
   request->data = status;
-  while (!m_EnableMotor->wait_for_service(1s))
+  int tries = 0;
+  for (; tries < 5 && !m_EnableMotor->wait_for_service(1s); ++tries)
   {
     if (!rclcpp::ok())
     {
-      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the sevice. Exiting.");
+      RCLCPP_INFO(rclcpp::get_logger("n10c"), "Interrupted while waiting for the service. Exiting.");
       return {};
     }
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "serice not available, waiting again ...");
+    RCLCPP_INFO(rclcpp::get_logger("n10c"), "Service not available, waiting again ...");
   }
+  if (tries >= 5)
+  {
+    RCLCPP_INFO(rclcpp::get_logger("n10c"), "Tried more than 5 times to reconnect with service; timeout.");
+    return {};
+  }
+
   auto result = m_EnableMotor->async_send_request(request);
   return result.get()->message;
 }
+
+geometry_msgs::msg::Twist &Communicator::Twist() { return m_TwistMessage; }
+
+const geometry_msgs::msg::Twist &Communicator::Twist() const { return m_TwistMessage; }
 
 void Communicator::PrimaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg)
 {
@@ -46,11 +57,4 @@ void Communicator::MotionImageCallback(const image_transport::ImageTransport::Im
 
 void Communicator::BarcodeCallback(const std_msgs::msg::String::ConstSharedPtr &) {}
 
-void Communicator::TimerCallback()
-{
-  auto message = geometry_msgs::msg::Twist();
-  (void)message.linear.x;
-  (void)message.linear.y;
-  (void)message.angular.z;
-  m_VelocityPublisher->publish(message);
-}
+void Communicator::TimerCallback() { m_VelocityPublisher->publish(m_TwistMessage); }

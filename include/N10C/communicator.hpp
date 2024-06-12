@@ -25,6 +25,9 @@ public:
 
   std::string EnableMotors(bool status);
 
+  geometry_msgs::msg::Twist &Twist();
+  const geometry_msgs::msg::Twist &Twist() const;
+
 private:
   void TimerCallback();
   void PrimaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg);
@@ -41,6 +44,8 @@ private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr m_BarCodeSubscriber;
 
   std::shared_ptr<rclcpp::Client<std_srvs::srv::SetBool>> m_EnableMotor;
+
+  geometry_msgs::msg::Twist m_TwistMessage;
 
   size_t m_Count;
 
