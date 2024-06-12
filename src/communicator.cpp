@@ -3,16 +3,15 @@
 
 using namespace std::chrono_literals;
 
-Communicator::Communicator(Davinci &davinci) : Node("n10c"), m_Count(0), m_Davinci(davinci)
+Communicator::Communicator(Davinci &davinci) : Node("n10c"), m_Count(0), m_Davinci(davinci) {}
+
+void Communicator::Init(image_transport::ImageTransport &it)
 {
+  m_PrimaryImgSubscriber = it.subscribe("/n10/camera/front", 10, &Communicator::PrimaryImageCallback, this);
+  m_SecondaryImgSubscriber = it.subscribe("/n10/camera/rear", 10, &Communicator::SecondaryImageCallback, this);
+  m_MotionImgSubscriber = it.subscribe("/n10/camera/motion", 10, &Communicator::MotionImageCallback, this);
+
   m_VelocityPublisher = this->create_publisher<geometry_msgs::msg::Twist>("n10/cmd_vel", 10);
-
-  image_transport::ImageTransport it(shared_from_this());
-
-  m_PrimaryImgSubscriber = it.subscribe("/n10/camera/front", 10, Communicator::PrimaryImageCallback, this);
-  m_SecondaryImgSubscriber = it.subscribe("/n10/camera/rear", 10, Communicator::SecondaryImageCallback, this);
-  m_MotionImgSubscriber = it.subscribe("/n10/camera/motion", 10, Communicator::MotionImageCallback, this);
-
   m_BarCodeSubscriber = this->create_subscription<std_msgs::msg::String>("/n10/barcode", 10, std::bind(&Communicator::BarcodeCallback, this, std::placeholders::_1));
 
   m_EnableMotor = this->create_client<std_srvs::srv::SetBool>("eduard/enable");

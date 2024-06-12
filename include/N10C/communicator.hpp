@@ -21,6 +21,8 @@ class Communicator : public rclcpp::Node
 public:
   explicit Communicator(class Davinci &davinci);
 
+  void Init(image_transport::ImageTransport &it);
+
   std::string EnableMotors(bool status);
 
 private:

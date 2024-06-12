@@ -12,6 +12,7 @@ public:
   void SetPrimaryImage(const std::vector<unsigned char> &data, uint32_t width, uint32_t height, uint32_t step, const std::string &encoding, uint8_t is_bigendian);
 
 protected:
+  void OnInit(guitar::AppConfig &config) override;
   void OnStart() override;
   void OnImGui() override;
 
