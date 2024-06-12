@@ -14,6 +14,7 @@ public:
 protected:
   void OnInit(guitar::AppConfig &config) override;
   void OnStart() override;
+  void OnFrame() override;
   void OnImGui() override;
 
 private:

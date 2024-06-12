@@ -160,4 +160,26 @@ void Davinci::OnStart()
       });
 }
 
+void Davinci::OnFrame()
+{
+  guitar::Joystick joystick = Input().GetJoystick(m_SelectedJoystick);
+
+  if (joystick.Name.empty())
+  {
+    // Keyboard
+  }
+  else
+  {
+    // Joystick
+    std::cout << joystick.Name << std::endl;
+    std::cout << "Axes: ";
+    for (const auto &axis : joystick.Axes) std::cout << axis << " ";
+    std::cout << std::endl << "Buttons: ";
+    for (const auto &button : joystick.Buttons) std::cout << button << " ";
+    std::cout << std::endl << "Hats: ";
+    for (const auto &hat : joystick.Hats) std::cout << hat << " ";
+    std::cout << std::endl;
+  }
+}
+
 void Davinci::OnImGui() { ImGui::ShowMetricsWindow(); }
