@@ -45,7 +45,7 @@ void Davinci::SetPrimaryImage(const std::vector<unsigned char> &data, uint32_t w
   delete[] pixels;
 }
 
-void Davinci::OnInit(guitar::AppConfig &config)
+void Davinci::OnInit(guitar::AppConfig &)
 {
   image_transport::ImageTransport it(m_Communicator);
   m_Communicator->Init(it);
