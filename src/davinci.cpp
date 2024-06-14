@@ -40,9 +40,18 @@ void Davinci::SetPrimaryImage(const std::vector<unsigned char> &data, uint32_t w
   auto bpp = step / width;
   auto pixels = new unsigned char[width * height * 4];
 
-  if (!convert_to_argb(pixels, data.data(), width * height, bpp, encoding)) m_PrimaryImage.StorePixels(width, height, pixels);
+  if (convert_to_argb(pixels, data.data(), width * height, bpp, encoding))
+  {
+    delete[] pixels;
+    return;
+  }
 
-  delete[] pixels;
+  Schedule(
+      [this, width, height, pixels]()
+      {
+        m_PrimaryImage.StorePixels(width, height, pixels);
+        delete[] pixels;
+      });
 }
 
 void Davinci::OnInit(guitar::AppConfig &)
