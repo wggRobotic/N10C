@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sensor_msgs/image_encodings.hpp>
 
-Davinci::Davinci(int argc, const char **argv) : Application(argc, argv), m_Communicator(std::make_shared<Communicator>(*this))
+Davinci::Davinci(int argc, const char **argv) : Application(argc, argv), m_Communicator(std::make_shared<Communicator>(*this)), m_Images(3)
 {
   m_Thread = std::thread([this]() { rclcpp::spin(m_Communicator); });
 }
