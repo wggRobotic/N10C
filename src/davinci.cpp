@@ -180,5 +180,3 @@ void Davinci::OnFrame()
       m_Communicator->EnableMotors(false);
   }
 }
-
-void Davinci::OnImGui() { ImGui::ShowMetricsWindow(); }
