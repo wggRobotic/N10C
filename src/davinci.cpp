@@ -8,7 +8,7 @@ Davinci::Davinci(int argc, const char **argv) : Application(argc, argv), m_Commu
   m_Thread = std::thread([this]() { rclcpp::spin(m_Communicator); });
 }
 
-static int convert_to_argb(unsigned char *dst, const unsigned char *src, size_t count, uint8_t bpp, const std::string &encoding)
+static int convert_to_rgba(unsigned char *dst, const unsigned char *src, size_t count, uint8_t bpp, const std::string &encoding)
 {
   auto has_alpha = sensor_msgs::image_encodings::hasAlpha(encoding);
   auto is_rgb = encoding == sensor_msgs::image_encodings::RGB8 || encoding == sensor_msgs::image_encodings::RGBA8;
@@ -16,7 +16,7 @@ static int convert_to_argb(unsigned char *dst, const unsigned char *src, size_t 
 
   if (!is_rgb && !is_bgr)
   {
-    std::cout << "Cannot convert unsupported encoding '" << encoding << "' to ARGB" << std::endl;
+    std::cout << "Cannot convert unsupported encoding '" << encoding << "' to RGBA" << std::endl;
     return 1;
   }
 
@@ -26,10 +26,10 @@ static int convert_to_argb(unsigned char *dst, const unsigned char *src, size_t 
   {
     auto pi = i * 4;
     auto di = i * bpp;
-    dst[pi + 0] = has_alpha ? src[di + 3] : 0xff;
-    dst[pi + 1] = is_rgb ? src[di + 0] : src[di + 2];
-    dst[pi + 2] = is_rgb ? src[di + 0] : src[di + 2];
-    dst[pi + 3] = is_rgb ? src[di + 0] : src[di + 2];
+    dst[pi + 0] = is_rgb ? src[di + 0] : src[di + 2];
+    dst[pi + 1] = is_rgb ? src[di + 1] : src[di + 1];
+    dst[pi + 2] = is_rgb ? src[di + 2] : src[di + 0];
+    dst[pi + 3] = has_alpha ? src[di + 3] : 0xff;
   }
 
   return 0;
@@ -43,7 +43,7 @@ void Davinci::SetImage(
   auto bpp = step / width;
   auto pixels = new unsigned char[width * height * 4];
 
-  if (convert_to_argb(pixels, data.data(), width * height, bpp, encoding))
+  if (convert_to_rgba(pixels, data.data(), width * height, bpp, encoding))
   {
     delete[] pixels;
     return;
