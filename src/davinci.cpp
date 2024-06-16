@@ -25,9 +25,9 @@ static int convert_to_argb(unsigned char *dst, const unsigned char *src, size_t 
     auto pi = i * 4;
     auto di = i * bpp;
     dst[pi + 0] = has_alpha ? src[di + 3] : 0xff;
-    dst[pi + 1] = is_bgr ? src[di + 1] : src[di + 1];
+    dst[pi + 1] = is_bgr ? src[di + 2] : src[di + 0];
     dst[pi + 2] = is_bgr ? src[di + 0] : src[di + 2];
-    dst[pi + 3] = is_bgr ? src[di + 2] : src[di + 0];
+    dst[pi + 3] = is_bgr ? src[di + 1] : src[di + 1];
   }
 
   return 0;
