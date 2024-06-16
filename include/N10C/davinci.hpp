@@ -28,6 +28,9 @@ private:
   // Joysticks
   int m_SelectedJoystick = -1;
 
+  bool m_EnableButtonPressed = false;
+  bool m_DisableButtonPressed = false;
+
   // Images
   std::vector<guitar::Image> m_Images;
 };

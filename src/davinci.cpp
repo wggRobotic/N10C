@@ -2,6 +2,7 @@
 #include <guitar/image.hpp>
 #include <iostream>
 #include <sensor_msgs/image_encodings.hpp>
+#include <thread>
 
 Davinci::Davinci(int argc, const char **argv) : Application(argc, argv), m_Communicator(std::make_shared<Communicator>(*this)), m_Images(3)
 {
@@ -129,6 +130,12 @@ void Davinci::OnStart()
       [this](const guitar::EventPayload *pPayload) -> bool
       {
         const auto &payload = *(guitar::StringPayload *)pPayload;
+        if (m_SelectedJoystick < 0)
+        {
+          payload.Result = "Keyboard";
+          return true;
+        }
+
         auto joysticks = Input().ListJoysticks();
         payload.Result = joysticks[m_SelectedJoystick];
         return true;
@@ -138,13 +145,13 @@ void Davinci::OnStart()
       [this](const guitar::EventPayload *) -> bool
       {
         auto joysticks = Input().ListJoysticks();
-        for (int i = 0; i < 16; ++i)
+        for (int i = -1; i < 16; ++i)
         {
-          if (joysticks[i].empty()) continue;
+          if (i >= 0 && joysticks[i].empty()) continue;
 
           ImGui::PushID(i);
           const bool selected = i == m_SelectedJoystick;
-          if (ImGui::Selectable(joysticks[i].c_str(), selected)) m_SelectedJoystick = i;
+          if (ImGui::Selectable(i < 0 ? "Keyboard" : joysticks[i].c_str(), selected)) m_SelectedJoystick = i;
           if (selected) ImGui::SetItemDefaultFocus();
           ImGui::PopID();
         }
@@ -158,6 +165,9 @@ void Davinci::OnFrame()
 
   if (joystick.Name.empty())
   {
+    m_EnableButtonPressed = false;
+    m_DisableButtonPressed = false;
+
     // Keyboard
     m_Communicator->Twist().linear.y = (Input().GetKey(GLFW_KEY_D) - Input().GetKey(GLFW_KEY_A)) * 10;
     m_Communicator->Twist().linear.x = (Input().GetKey(GLFW_KEY_W) - Input().GetKey(GLFW_KEY_S)) * 10;
@@ -175,8 +185,10 @@ void Davinci::OnFrame()
     //  left and right
     m_Communicator->Twist().angular.z = joystick.Axes[2];
 
-    if (joystick.Buttons[0]) m_Communicator->EnableMotors(true);
-    else if (joystick.Buttons[1])
-      m_Communicator->EnableMotors(false);
+    if (!m_EnableButtonPressed && joystick.Buttons[0]) { m_Communicator->EnableMotors(true); }
+    else if (!m_DisableButtonPressed && joystick.Buttons[1]) { m_Communicator->EnableMotors(false); }
+
+    m_EnableButtonPressed = joystick.Buttons[0];
+    m_DisableButtonPressed = joystick.Buttons[1];
   }
 }

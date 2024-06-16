@@ -1,5 +1,6 @@
 #include <N10C/communicator.hpp>
 #include <N10C/davinci.hpp>
+#include <thread>
 
 using namespace std::chrono_literals;
 
@@ -18,28 +19,44 @@ void Communicator::Init(image_transport::ImageTransport &it)
   m_Timer = this->create_wall_timer(500ms, std::bind(&Communicator::TimerCallback, this));
 }
 
-std::string Communicator::EnableMotors(bool status)
+void Communicator::EnableMotors(bool status)
 {
-  auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
-  request->data = status;
-  int tries = 0;
-  for (; tries < 5 && !m_EnableMotor->wait_for_service(1s); ++tries)
+  if (m_RequestingEnable)
   {
-    if (!rclcpp::ok())
-    {
-      RCLCPP_INFO(rclcpp::get_logger("n10c"), "Interrupted while waiting for the service. Exiting.");
-      return {};
-    }
-    RCLCPP_INFO(rclcpp::get_logger("n10c"), "Service not available, waiting again ...");
-  }
-  if (tries >= 5)
-  {
-    RCLCPP_INFO(rclcpp::get_logger("n10c"), "Tried more than 5 times to reconnect with service; timeout.");
-    return {};
+    std::cout << "Waiting for previous request to return" << std::endl;
+    return;
   }
 
-  auto result = m_EnableMotor->async_send_request(request);
-  return result.get()->message;
+  m_RequestingEnable = true;
+
+  m_Tasks.emplace_back(
+      [this, status]
+      {
+        auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
+        request->data = status;
+        int tries = 0;
+        for (; tries < 5 && !m_EnableMotor->wait_for_service(1s); ++tries)
+        {
+          if (!rclcpp::ok())
+          {
+	    std::cout << "Interrupted while waiting for the service. Exiting." << std::endl;
+	    m_RequestingEnable = false;
+	    return;
+          }
+          std::cout << "Service not available, waiting again ..." << std::endl;
+        }
+        if (tries >= 5)
+        {
+          std::cout << "Tried more than 5 times to reconnect with service; timeout." << std::endl;
+          m_RequestingEnable = false;
+          return;
+        }
+
+        auto result = m_EnableMotor->async_send_request(request);
+        std::cout << result.get()->message << std::endl;
+
+        m_RequestingEnable = false;
+      });
 }
 
 geometry_msgs::msg::Twist &Communicator::Twist() { return m_TwistMessage; }
@@ -63,4 +80,10 @@ void Communicator::MotionImageCallback(const image_transport::ImageTransport::Im
 
 void Communicator::BarcodeCallback(const std_msgs::msg::String::ConstSharedPtr &) {}
 
-void Communicator::TimerCallback() { m_VelocityPublisher->publish(m_TwistMessage); }
+void Communicator::TimerCallback()
+{
+  for (const auto &task : m_Tasks) task();
+  m_Tasks.clear();
+
+  m_VelocityPublisher->publish(m_TwistMessage);
+}

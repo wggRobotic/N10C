@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #ifndef COMMUNICATOR_HPP
 #define COMMUNICATOR_HPP
 
@@ -16,14 +17,15 @@
 
 using namespace std::chrono_literals;
 
+typedef std::function<void()> Task;
+
 class Communicator : public rclcpp::Node
 {
 public:
   explicit Communicator(class Davinci &davinci);
 
   void Init(image_transport::ImageTransport &it);
-
-  std::string EnableMotors(bool status);
+  void EnableMotors(bool status);
 
   geometry_msgs::msg::Twist &Twist();
   const geometry_msgs::msg::Twist &Twist() const;
@@ -48,6 +50,9 @@ private:
   geometry_msgs::msg::Twist m_TwistMessage;
 
   size_t m_Count;
+  bool m_RequestingEnable = false;
+
+  std::vector<Task> m_Tasks;
 
   class Davinci &m_Davinci;
 };
