@@ -38,6 +38,8 @@ void Davinci::SetImage(
 {
   (void)is_bigendian;
 
+  std::cout << "Davinci SetImage " << index << std::endl;
+
   auto bpp = step / width;
   auto pixels = new unsigned char[width * height * 4];
 
@@ -57,12 +59,16 @@ void Davinci::SetImage(
 
 void Davinci::OnInit(guitar::AppConfig &)
 {
+  std::cout << "Davinci OnInit" << std::endl;
   image_transport::ImageTransport it(m_Communicator);
   m_Communicator->Init(it);
 }
 
 void Davinci::OnStart()
 {
+  std::cout << "Davinci OnStart" << std::endl;
+
+  std::cout << "Registering on_key" << std::endl;
   Events().Register(
       "on_key", this,
       [this](const guitar::EventPayload *pPayload) -> bool
@@ -83,6 +89,7 @@ void Davinci::OnStart()
         return false;
       });
 
+  std::cout << "Registering selected_camera and select_camera" << std::endl;
   Events().Register(
       "selected_camera", this,
       [this](const guitar::EventPayload *pPayload) -> bool
@@ -106,6 +113,7 @@ void Davinci::OnStart()
         return true;
       });
 
+  std::cout << "Registering camera" << std::endl;
   Events().Register(
       "camera", this,
       [this](const guitar::EventPayload *pPayload) -> bool
@@ -124,6 +132,7 @@ void Davinci::OnStart()
         return false;
       });
 
+  std::cout << "Registering selected_joystick and select_joystick" << std::endl;
   Events().Register(
       "selected_joystick", this,
       [this](const guitar::EventPayload *pPayload) -> bool
@@ -154,6 +163,8 @@ void Davinci::OnStart()
 
 void Davinci::OnFrame()
 {
+  std::cout << "Davinci OnFrame" << std::endl;
+
   guitar::Joystick joystick = Input().GetJoystick(m_SelectedJoystick);
 
   if (joystick.Name.empty())
