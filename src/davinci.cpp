@@ -33,7 +33,8 @@ static int convert_to_argb(unsigned char *dst, const unsigned char *src, size_t 
   return 0;
 }
 
-void Davinci::SetPrimaryImage(const std::vector<unsigned char> &data, uint32_t width, uint32_t height, uint32_t step, const std::string &encoding, uint8_t is_bigendian)
+void Davinci::SetImage(
+    const size_t index, const std::vector<unsigned char> &data, const uint32_t width, const uint32_t height, const uint32_t step, const std::string &encoding, const uint8_t is_bigendian)
 {
   (void)is_bigendian;
 
@@ -47,9 +48,9 @@ void Davinci::SetPrimaryImage(const std::vector<unsigned char> &data, uint32_t w
   }
 
   Schedule(
-      [this, width, height, pixels]()
+      [this, index, width, height, pixels]()
       {
-        m_PrimaryImage.StorePixels(width, height, pixels);
+        m_Images[index].StorePixels(width, height, pixels);
         delete[] pixels;
       });
 }
@@ -111,30 +112,12 @@ void Davinci::OnStart()
       {
         const auto &payload = *(guitar::ImagePayload *)pPayload;
 
-        switch (m_SelectedCamera)
+        if (m_SelectedCamera >= 0 && m_SelectedCamera < m_Images.size())
         {
-        case 0: // Front
-          payload.Width = m_PrimaryImage.Width;
-          payload.Height = m_PrimaryImage.Height;
-          payload.TextureID = (void *)(intptr_t)m_PrimaryImage.Texture;
-          return true;
-
-        case 1: // TODO: Rear
-          payload.Width = 0;
-          payload.Height = 0;
-          payload.TextureID = (void *)(intptr_t)0;
-          return true;
-
-        case 2: // TODO: Thermal
-          payload.Width = 0;
-          payload.Height = 0;
-          payload.TextureID = (void *)(intptr_t)0;
-          return true;
-
-        case 3: // TODO: Depth
-          payload.Width = 0;
-          payload.Height = 0;
-          payload.TextureID = (void *)(intptr_t)0;
+          const auto &image = m_Images[m_SelectedCamera];
+          payload.Width = image.Width;
+          payload.Height = image.Height;
+          payload.TextureID = (void *)(intptr_t)image.Texture;
           return true;
         }
 

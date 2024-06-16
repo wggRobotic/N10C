@@ -9,7 +9,7 @@ class Davinci : public guitar::Application
 public:
   Davinci(int argc, const char **argv);
 
-  void SetPrimaryImage(const std::vector<unsigned char> &data, uint32_t width, uint32_t height, uint32_t step, const std::string &encoding, uint8_t is_bigendian);
+  void SetImage(size_t index, const std::vector<unsigned char> &data, uint32_t width, uint32_t height, uint32_t step, const std::string &encoding, uint8_t is_bigendian);
 
 protected:
   void OnInit(guitar::AppConfig &config) override;
@@ -24,13 +24,11 @@ private:
 
   // Cameras
   int m_SelectedCamera = 0;
-  const std::vector<std::string> m_Cameras = { "Front", "Rear", "Thermal", "Depth" };
+  const std::vector<std::string> m_Cameras = { "Front", "Rear", "Motion" };
 
   // Joysticks
   int m_SelectedJoystick = -1;
 
   // Images
-  guitar::Image m_PrimaryImage;
-  guitar::Image m_SecondaryImage;
-  guitar::Image m_MotionImage;
+  std::vector<guitar::Image> m_Images;
 };

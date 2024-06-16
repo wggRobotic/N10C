@@ -48,12 +48,18 @@ const geometry_msgs::msg::Twist &Communicator::Twist() const { return m_TwistMes
 
 void Communicator::PrimaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg)
 {
-  m_Davinci.SetPrimaryImage(msg->data, msg->width, msg->height, msg->step, msg->encoding, msg->is_bigendian);
+  m_Davinci.SetImage(0, msg->data, msg->width, msg->height, msg->step, msg->encoding, msg->is_bigendian);
 }
 
-void Communicator::SecondaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &) {}
+void Communicator::SecondaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg)
+{
+  m_Davinci.SetImage(1, msg->data, msg->width, msg->height, msg->step, msg->encoding, msg->is_bigendian);
+}
 
-void Communicator::MotionImageCallback(const image_transport::ImageTransport::ImageConstPtr &) {}
+void Communicator::MotionImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg)
+{
+  m_Davinci.SetImage(2, msg->data, msg->width, msg->height, msg->step, msg->encoding, msg->is_bigendian);
+}
 
 void Communicator::BarcodeCallback(const std_msgs::msg::String::ConstSharedPtr &) {}
 
