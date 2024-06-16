@@ -20,8 +20,6 @@ static int convert_to_rgba(unsigned char *dst, const unsigned char *src, size_t 
     return 1;
   }
 
-  std::cout << encoding << std::endl;
-
   for (size_t i = 0; i < count; ++i)
   {
     auto pi = i * 4;
