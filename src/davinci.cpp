@@ -178,12 +178,12 @@ void Davinci::OnFrame()
     // Joystick
     // joystick.Dump();
     // linear left and right
-    m_Communicator->Twist().linear.y = joystick.Axes[0] * 10;
+    m_Communicator->Twist().linear.y = joystick.Axes[0] * 1;
     // forward backward
-    m_Communicator->Twist().linear.x = joystick.Axes[1] * 10;
+    m_Communicator->Twist().linear.x = joystick.Axes[1] * 1;
     // angular
     //  left and right
-    m_Communicator->Twist().angular.z = joystick.Axes[2];
+    m_Communicator->Twist().angular.z = joystick.Axes[2] * 0.25;
 
     if (!m_EnableButtonPressed && joystick.Buttons[0]) { m_Communicator->EnableMotors(true); }
     else if (!m_DisableButtonPressed && joystick.Buttons[1]) { m_Communicator->EnableMotors(false); }

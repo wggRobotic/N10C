@@ -16,7 +16,7 @@ void Communicator::Init(image_transport::ImageTransport &it)
   m_BarCodeSubscriber = this->create_subscription<std_msgs::msg::String>("/n10/barcode", 10, std::bind(&Communicator::BarcodeCallback, this, std::placeholders::_1));
 
   m_EnableMotor = this->create_client<std_srvs::srv::SetBool>("eduard/enable");
-  m_Timer = this->create_wall_timer(500ms, std::bind(&Communicator::TimerCallback, this));
+  m_Timer = this->create_wall_timer(10ms, std::bind(&Communicator::TimerCallback, this));
 }
 
 void Communicator::EnableMotors(bool status)
