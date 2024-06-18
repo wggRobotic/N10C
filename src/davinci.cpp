@@ -170,6 +170,7 @@ void Davinci::OnStart()
 void Davinci::OnFrame()
 {
   guitar::Joystick joystick = Input().GetJoystick(m_SelectedJoystick);
+  float multiX = 1.0f, multiY = 1.0f, multiZ = 0.25f;
 
   if (joystick.Name.empty())
   {
@@ -177,21 +178,21 @@ void Davinci::OnFrame()
     m_DisableButtonPressed = false;
 
     // Keyboard
-    m_Communicator->Twist().linear.y = (Input().GetKey(GLFW_KEY_D) - Input().GetKey(GLFW_KEY_A)) * 10;
-    m_Communicator->Twist().linear.x = (Input().GetKey(GLFW_KEY_W) - Input().GetKey(GLFW_KEY_S)) * 10;
-    m_Communicator->Twist().angular.z = (Input().GetKey(GLFW_KEY_Q) - Input().GetKey(GLFW_KEY_E));
+    m_Communicator->Twist().linear.y  = (Input().GetKey(GLFW_KEY_D) - Input().GetKey(GLFW_KEY_A)) * multiY;
+    m_Communicator->Twist().linear.x  = (Input().GetKey(GLFW_KEY_W) - Input().GetKey(GLFW_KEY_S)) * multiX;
+    m_Communicator->Twist().angular.z = (Input().GetKey(GLFW_KEY_Q) - Input().GetKey(GLFW_KEY_E)) * multiZ;
   }
   else
   {
     // Joystick
     //joystick.Dump();
     // linear left and right
-      m_Communicator->Twist().linear.y = NoStickdrift(joystick.Axes[0]) * 1;
+      m_Communicator->Twist().linear.y = NoStickdrift(joystick.Axes[0]) * multiY;
     // forward backward
-      m_Communicator->Twist().linear.x = NoStickdrift(joystick.Axes[1]) * 1;
+      m_Communicator->Twist().linear.x = NoStickdrift(joystick.Axes[1]) * multiX;
     // angular
     //  left and right
-      m_Communicator->Twist().angular.z = NoStickdrift(joystick.Axes[3]) * 1;
+      m_Communicator->Twist().angular.z = NoStickdrift(joystick.Axes[3]) * multiZ;
 
     if (!m_EnableButtonPressed && joystick.Buttons[0]) { m_Communicator->EnableMotors(true); }
     else if (!m_DisableButtonPressed && joystick.Buttons[1]) { m_Communicator->EnableMotors(false); }
