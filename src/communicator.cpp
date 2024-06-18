@@ -8,7 +8,7 @@ Communicator::Communicator(Davinci &davinci) : Node("n10c"), m_Count(0), m_Davin
 
 void Communicator::Init(image_transport::ImageTransport &it)
 {
-  m_PrimaryImgSubscriber = it.subscribe("/n10/camera/front", 10, &Communicator::PrimaryImageCallback, this);
+  m_PrimaryImgSubscriber = it.subscribe("/n10/front/color", 10, &Communicator::PrimaryImageCallback, this);
   m_SecondaryImgSubscriber = it.subscribe("/n10/camera/rear", 10, &Communicator::SecondaryImageCallback, this);
   m_MotionImgSubscriber = it.subscribe("/n10/camera/motion", 10, &Communicator::MotionImageCallback, this);
 
