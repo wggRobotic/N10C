@@ -12,10 +12,10 @@ void Communicator::Init(image_transport::ImageTransport &it)
   m_SecondaryImgSubscriber = it.subscribe("/n10/camera/rear", 10, &Communicator::SecondaryImageCallback, this);
   m_MotionImgSubscriber = it.subscribe("/n10/camera/motion", 10, &Communicator::MotionImageCallback, this);
 
-  m_VelocityPublisher = this->create_publisher<geometry_msgs::msg::Twist>("n10/cmd_vel", 10);
+  m_VelocityPublisher = this->create_publisher<geometry_msgs::msg::Twist>("/n10/cmd_vel", 10);
   m_BarCodeSubscriber = this->create_subscription<std_msgs::msg::String>("/n10/barcode", 10, std::bind(&Communicator::BarcodeCallback, this, std::placeholders::_1));
 
-  m_EnableMotor = this->create_client<std_srvs::srv::SetBool>("eduard/enable");
+  m_EnableMotor = this->create_client<std_srvs::srv::SetBool>("/eduard/enable");
   m_Timer = this->create_wall_timer(10ms, std::bind(&Communicator::TimerCallback, this));
 }
 
@@ -62,6 +62,8 @@ void Communicator::EnableMotors(bool status)
 geometry_msgs::msg::Twist &Communicator::Twist() { return m_TwistMessage; }
 
 const geometry_msgs::msg::Twist &Communicator::Twist() const { return m_TwistMessage; }
+
+void Communicator::Schedule(const Task &task) { m_Tasks.push_back(task); }
 
 void Communicator::PrimaryImageCallback(const image_transport::ImageTransport::ImageConstPtr &msg)
 {

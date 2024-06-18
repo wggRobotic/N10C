@@ -58,16 +58,18 @@ void Davinci::SetImage(
 
 void Davinci::OnInit(guitar::AppConfig &)
 {
-  image_transport::ImageTransport it(m_Communicator);
-  m_Communicator->Init(it);
+  m_Communicator->Schedule(
+      [this]
+      {
+        image_transport::ImageTransport it(m_Communicator);
+        m_Communicator->Init(it);
+      });
 }
 
-float Davinci::NoStickdrift(float value){
-    if(std::fabs(value)>0.1f){
-      return value;
-    }else{
-      return 0.0f;
-    }
+float Davinci::NoStickdrift(float value)
+{
+  if (std::fabs(value) > 0.1f) { return value; }
+  else { return 0.0f; }
 }
 
 void Davinci::OnStart()
@@ -177,22 +179,25 @@ void Davinci::OnFrame()
     m_EnableButtonPressed = false;
     m_DisableButtonPressed = false;
 
+    if (Input().GetKeyRelease(GLFW_KEY_F)) m_Communicator->EnableMotors(true);
+    if (Input().GetKeyRelease(GLFW_KEY_R)) m_Communicator->EnableMotors(false);
+
     // Keyboard
-    m_Communicator->Twist().linear.y  = (Input().GetKey(GLFW_KEY_D) - Input().GetKey(GLFW_KEY_A)) * multiY;
-    m_Communicator->Twist().linear.x  = (Input().GetKey(GLFW_KEY_W) - Input().GetKey(GLFW_KEY_S)) * multiX;
+    m_Communicator->Twist().linear.y = (Input().GetKey(GLFW_KEY_D) - Input().GetKey(GLFW_KEY_A)) * multiY;
+    m_Communicator->Twist().linear.x = (Input().GetKey(GLFW_KEY_W) - Input().GetKey(GLFW_KEY_S)) * multiX;
     m_Communicator->Twist().angular.z = (Input().GetKey(GLFW_KEY_Q) - Input().GetKey(GLFW_KEY_E)) * multiZ;
   }
   else
   {
     // Joystick
-    //joystick.Dump();
+    // joystick.Dump();
     // linear left and right
-      m_Communicator->Twist().linear.y = NoStickdrift(joystick.Axes[0]) * multiY;
+    m_Communicator->Twist().linear.y = NoStickdrift(joystick.Axes[0]) * multiY;
     // forward backward
-      m_Communicator->Twist().linear.x = NoStickdrift(joystick.Axes[1]) * multiX;
+    m_Communicator->Twist().linear.x = NoStickdrift(joystick.Axes[1]) * multiX;
     // angular
     //  left and right
-      m_Communicator->Twist().angular.z = NoStickdrift(joystick.Axes[3]) * multiZ;
+    m_Communicator->Twist().angular.z = NoStickdrift(joystick.Axes[3]) * multiZ;
 
     if (!m_EnableButtonPressed && joystick.Buttons[0]) { m_Communicator->EnableMotors(true); }
     else if (!m_DisableButtonPressed && joystick.Buttons[1]) { m_Communicator->EnableMotors(false); }

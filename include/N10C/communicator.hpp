@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 #ifndef COMMUNICATOR_HPP
 #define COMMUNICATOR_HPP
 
@@ -14,6 +13,7 @@
 #include <std_msgs/msg/string.hpp>
 #include <std_srvs/srv/set_bool.hpp>
 #include <string>
+#include <vector>
 
 using namespace std::chrono_literals;
 
@@ -29,6 +29,8 @@ public:
 
   geometry_msgs::msg::Twist &Twist();
   const geometry_msgs::msg::Twist &Twist() const;
+
+  void Schedule(const Task &task);
 
 private:
   void TimerCallback();
