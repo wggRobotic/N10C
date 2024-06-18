@@ -62,6 +62,14 @@ void Davinci::OnInit(guitar::AppConfig &)
   m_Communicator->Init(it);
 }
 
+float Davinci::NoStickdrift(float value){
+    if(std::fabs(value)>0.1f){
+      return value;
+    }else{
+      return 0.0f;
+    }
+}
+
 void Davinci::OnStart()
 {
   Events().Register(
@@ -176,14 +184,14 @@ void Davinci::OnFrame()
   else
   {
     // Joystick
-    // joystick.Dump();
+    //joystick.Dump();
     // linear left and right
-    m_Communicator->Twist().linear.y = joystick.Axes[0] * 1;
+      m_Communicator->Twist().linear.y = NoStickdrift(joystick.Axes[0]) * 1;
     // forward backward
-    m_Communicator->Twist().linear.x = joystick.Axes[1] * 1;
+      m_Communicator->Twist().linear.x = NoStickdrift(joystick.Axes[1]) * 1;
     // angular
     //  left and right
-    m_Communicator->Twist().angular.z = joystick.Axes[2] * 0.25;
+      m_Communicator->Twist().angular.z = NoStickdrift(joystick.Axes[3]) * 1;
 
     if (!m_EnableButtonPressed && joystick.Buttons[0]) { m_Communicator->EnableMotors(true); }
     else if (!m_DisableButtonPressed && joystick.Buttons[1]) { m_Communicator->EnableMotors(false); }

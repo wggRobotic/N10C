@@ -20,7 +20,7 @@ private:
   // ROS
   std::shared_ptr<Communicator> m_Communicator;
   std::thread m_Thread;
-
+  float NoStickdrift(float);
   // Cameras
   int m_SelectedCamera = 0;
   const std::vector<std::string> m_Cameras = { "Front", "Rear", "Motion" };
