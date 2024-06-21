@@ -1,11 +1,7 @@
 #include <N10C/n10c.hpp>
-
-#include <geometry_msgs/msg/twist.hpp>
-#include <memory>
-#include <rclcpp/node_options.hpp>
-#include <rclcpp/utilities.hpp>
+#include <rclcpp/executors.hpp>
+#include <rclcpp/future_return_code.hpp>
 #include <sensor_msgs/image_encodings.hpp>
-#include <std_msgs/msg/string.hpp>
 
 using namespace std::chrono_literals;
 
@@ -19,8 +15,8 @@ void N10C::SetupWithImageTransport(image_transport::ImageTransport &it)
 
   m_BarcodeSubscriber = create_subscription<std_msgs::msg::String>("/n10/barcode", 10, std::bind(&N10C::BarcodeCallback, this, std::placeholders::_1));
 
-  m_TwistPublisher = create_publisher<geometry_msgs::msg::Twist>("/n10/cmd_vel", 10);
-  m_EnableMotorClient = create_client<std_srvs::srv::SetBool>("/eduard/enable");
+  m_TwistPublisher = create_publisher<geometry_msgs::msg::Twist>("/vel/teleop", 10);
+  m_EnableMotorClient = create_client<std_srvs::srv::SetBool>("/enable");
 
   m_Timer = create_wall_timer(20ms, std::bind(&N10C::TimerCallback, this));
 }
@@ -179,12 +175,19 @@ void N10C::BarcodeCallback(const StringConstPtr &msg) { std::cout << msg->data <
 
 void N10C::TimerCallback()
 {
-  if (m_ShouldSetMotorStatusTrue) SetMotorStatus(true);
-  if (m_ShouldSetMotorStatusFalse) SetMotorStatus(false);
-  m_ShouldSetMotorStatusTrue = m_ShouldSetMotorStatusFalse = false;
+  if (m_ShouldSetMotorStatusTrue)
+  {
+    m_ShouldSetMotorStatusTrue = false;
+    SetMotorStatus(true);
+  }
+  if (m_ShouldSetMotorStatusFalse)
+  {
+    m_ShouldSetMotorStatusFalse = false;
+    SetMotorStatus(false);
+  }
 }
 
-bool N10C::SetMotorStatus(bool status)
+bool N10C::SetMotorStatus(bool state)
 {
   if (m_SetMotorStatusLock)
   {
@@ -211,12 +214,23 @@ bool N10C::SetMotorStatus(bool status)
   }
 
   auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
-  request->data = status;
-  auto result = m_EnableMotorClient->async_send_request(request);
-  std::cout << result.get()->message << std::endl;
+  request->data = state;
+
+  auto future = m_EnableMotorClient->async_send_request(request);
+
+  bool success = false;
+  switch (future.wait_for(1s))
+  {
+  case std::future_status::ready:
+    std::cout << future.get()->message << std::endl;
+    success = future.get()->success;
+    break;
+  case std::future_status::deferred: std::cerr << "Request deferred" << std::endl; break;
+  case std::future_status::timeout: std::cerr << "Request timeout" << std::endl; break;
+  }
 
   m_SetMotorStatusLock = false;
-  return result.get()->success;
+  return success;
 }
 
 float N10C::NoStickDrift(float x) { return std::fabs(x) > 0.1f ? x : 0.0f; }

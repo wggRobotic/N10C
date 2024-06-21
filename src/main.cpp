@@ -1,6 +1,4 @@
 #include <N10C/n10c.hpp>
-#include <rclcpp/executors.hpp>
-#include <rclcpp/utilities.hpp>
 
 int main(const int argc, const char **argv)
 {
