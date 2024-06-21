@@ -1,3 +1,4 @@
+#include "guitar/events.hpp"
 #include <N10C/n10c.hpp>
 #include <rclcpp/executors.hpp>
 #include <rclcpp/future_return_code.hpp>
@@ -126,6 +127,14 @@ void N10C::OnStart()
           if (selected) ImGui::SetItemDefaultFocus();
           ImGui::PopID();
         }
+        return true;
+      });
+
+  Events().Register(
+      "open_settings", this,
+      [this](const guitar::EventPayload *) -> bool
+      {
+        Schedule([this] { UseLayout("settings"); });
         return true;
       });
 }

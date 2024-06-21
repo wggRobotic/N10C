@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout id="settings" dockspace="true">
+    <menubar>
+        <menu name="File">
+            <item alt="ctrl+b">Back</item>
+        </menu>
+    </menubar>
+    <window name="Topics">
+        <inputText
+            label="Image0 Topic"
+            hint="ROS Topic"
+            event="set_image0_topic"
+            default="$get_image0_topic" />
+        <inputText
+            label="Image1 Topic"
+            hint="ROS Topic"
+            event="set_image1_topic"
+            default="$get_image1_topic" />
+        <inputText
+            label="Image2 Topic"
+            hint="ROS Topic"
+            event="set_image2_topic"
+            default="$get_image2_topic" />
+    </window>
+</layout>

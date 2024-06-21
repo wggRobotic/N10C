@@ -4,6 +4,7 @@
             "name": "ROS: Attach",
             "type": "ros",
             "request": "attach",
+            "runtime": "C++",
         }
     ]
 }
