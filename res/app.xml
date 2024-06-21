@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app xmlns="ImAppXML"
+     title="N10C"
+     version="0.0.1"
+     layout="main"
+     width="800"
+     height="600"
+     viewports="false" />

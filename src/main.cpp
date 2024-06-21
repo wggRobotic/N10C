@@ -1,15 +1,13 @@
-#include <chrono>
-#include <functional>
-#include <memory>
-#include <string>
-#include <N10C/communicator.hpp>
-#include <rclcpp/rclcpp.hpp>
-#include <sensor_msgs/msg/compressed_image.hpp>
+#include <N10C/n10c.hpp>
 
 int main(const int argc, const char **argv)
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<Communicator>());
+  const auto n10c = std::make_shared<N10C>(argc, argv);
+  image_transport::ImageTransport it(n10c);
+  n10c->SetupWithImageTransport(it);
+  std::thread gui([&n10c] { n10c->Launch(); });
+  rclcpp::spin(n10c);
   rclcpp::shutdown();
   return 0;
 }

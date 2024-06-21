@@ -27,28 +27,32 @@ include(FetchContent)
 FetchContent_Declare(
   GUItar
   GIT_REPOSITORY https://github.com/Scriptor25/GUItar.git
-  GIT_TAG        main
+  GIT_TAG dev
 )
 FetchContent_MakeAvailable(GUItar)
 
 file(GLOB_RECURSE src src/**.cpp include/**.hpp)
 add_executable(n10c ${src})
-ament_target_dependencies(n10c PUBLIC 
-  rclcpp 
-  std_msgs 
-  sensor_msgs 
-  geometry_msgs 
-  OpenCV 
-  cv_bridge 
-  image_transport 
+ament_target_dependencies(n10c PUBLIC
+  rclcpp
+  std_msgs
+  sensor_msgs
+  geometry_msgs
+  OpenCV
+  cv_bridge
+  image_transport
   compressed_image_transport
   std_srvs
 )
-target_include_directories(n10c PUBLIC include)
+target_include_directories(n10c PUBLIC "include")
 target_link_libraries(n10c PUBLIC GUItar)
 
 install(
   TARGETS n10c
+  DESTINATION lib/${PROJECT_NAME}
+)
+install(
+  DIRECTORY res
   DESTINATION lib/${PROJECT_NAME}
 )
 
