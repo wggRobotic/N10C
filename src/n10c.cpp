@@ -1,4 +1,5 @@
 #include <N10C/n10c.hpp>
+#include <guitar/events.hpp>
 #include <rclcpp/executors.hpp>
 #include <rclcpp/future_return_code.hpp>
 #include <rclcpp/parameter.hpp>
@@ -42,16 +43,16 @@ void N10C::OnStart()
 {
   Events().Register(
       "on_key", this,
-      [this](const guitar::EventPayload *pPayload) -> bool
+      [this](const guitar::EventBase *pEvent) -> bool
       {
-        const auto &payload = *(guitar::KeyPayload *)pPayload;
-        if (payload.Key == GLFW_KEY_ESCAPE && payload.Action == GLFW_RELEASE)
+        auto &event = *(guitar::KeyEvent *)pEvent;
+        if (event.Payload.KeyCode == GLFW_KEY_ESCAPE && event.Payload.Action == GLFW_RELEASE)
         {
           Close();
           return true;
         }
 
-        if (payload.Key == GLFW_KEY_F11 && payload.Action == GLFW_RELEASE)
+        if (event.Payload.KeyCode == GLFW_KEY_F11 && event.Payload.Action == GLFW_RELEASE)
         {
           Schedule([this] { ToggleFullscreen(); });
           return true;
@@ -62,15 +63,15 @@ void N10C::OnStart()
 
   Events().Register(
       "selected_camera", this,
-      [this](const guitar::EventPayload *pPayload) -> bool
+      [this](const guitar::EventBase *pEvent) -> bool
       {
-        const auto &payload = *(guitar::StringPayload *)pPayload;
-        payload.Result = m_Cameras[m_SelectedCamera];
+        auto &event = *(guitar::MutableEvent<std::string> *)pEvent;
+        event.Payload = m_Cameras[m_SelectedCamera];
         return true;
       });
   Events().Register(
       "select_camera", this,
-      [this](const guitar::EventPayload *) -> bool
+      [this](const guitar::EventBase *) -> bool
       {
         for (int i = 0; i < static_cast<int>(m_Cameras.size()); ++i)
         {
@@ -85,16 +86,16 @@ void N10C::OnStart()
 
   Events().Register(
       "camera", this,
-      [this](const guitar::EventPayload *pPayload) -> bool
+      [this](const guitar::EventBase *pEvent) -> bool
       {
-        const auto &payload = *(guitar::ImagePayload *)pPayload;
+        auto &event = *(guitar::ImageEvent *)pEvent;
 
         if (m_SelectedCamera >= 0 && m_SelectedCamera < static_cast<int>(m_Images.size()))
         {
           const auto &image = m_Images[m_SelectedCamera];
-          payload.Width = image.Width;
-          payload.Height = image.Height;
-          payload.TextureID = (void *)(intptr_t)image.Texture;
+          event.Payload.Width = image.Width;
+          event.Payload.Height = image.Height;
+          event.Payload.TextureID = (void *)(intptr_t)image.Texture;
           return true;
         }
 
@@ -103,22 +104,22 @@ void N10C::OnStart()
 
   Events().Register(
       "selected_joystick", this,
-      [this](const guitar::EventPayload *pPayload) -> bool
+      [this](const guitar::EventBase *pEvent) -> bool
       {
-        const auto &payload = *(guitar::StringPayload *)pPayload;
+        const auto &payload = *(guitar::MutableEvent<std::string> *)pEvent;
         if (m_SelectedJoystick < 0)
         {
-          payload.Result = "Keyboard";
+          payload.Payload = "Keyboard";
           return true;
         }
 
         auto joysticks = Input().ListJoysticks();
-        payload.Result = joysticks[m_SelectedJoystick];
+        payload.Payload = joysticks[m_SelectedJoystick];
         return true;
       });
   Events().Register(
       "select_joystick", this,
-      [this](const guitar::EventPayload *) -> bool
+      [this](const guitar::EventBase *) -> bool
       {
         auto joysticks = Input().ListJoysticks();
         if (joysticks.count(m_SelectedJoystick)) m_SelectedJoystick = -1;
@@ -138,7 +139,7 @@ void N10C::OnStart()
 
   Events().Register(
       "open_settings", this,
-      [this](const guitar::EventPayload *) -> bool
+      [this](const guitar::EventBase *) -> bool
       {
         Schedule([this] { UseLayout("settings"); });
         return true;
