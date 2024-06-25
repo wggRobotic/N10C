@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout id="settings" dockspace="true">
     <menubar>
-        <menu name="File">
-            <item alt="ctrl+b">Back</item>
+        <menu label="File">
+            <item shortcut="escape" event="open_main">Back</item>
         </menu>
     </menubar>
     <window name="Topics">
