@@ -1,4 +1,3 @@
-#include "guitar/events.hpp"
 #include <N10C/n10c.hpp>
 #include <rclcpp/executors.hpp>
 #include <rclcpp/future_return_code.hpp>
