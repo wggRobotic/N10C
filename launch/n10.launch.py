@@ -11,10 +11,6 @@ def generate_launch_description():
                 {'image1': '/n10/rear/color'},
                 {'image2': '/n10/cam_dif'}
             ],
-            output={
-                'stdout': 'screen',
-                'stderr': 'screen'
-            }
         ),
         Node(
             package= 'n10_cam_dif',
