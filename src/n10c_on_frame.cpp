@@ -27,8 +27,8 @@ void N10C::OnFrame()
   }
 
   m_TwistMessage.linear.y = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Horizontal")) * multiY;
-  m_TwistMessage.linear.x = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * multiX;
-  m_TwistMessage.angular.z = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Rotate")) * multiZ;
+  m_TwistMessage.linear.x = NoStickDrift(-1* Input().GetAxis(m_SelectedJoystick, "Vertical")) * multiX;
+  m_TwistMessage.angular.z = NoStickDrift(-1* Input().GetAxis(m_SelectedJoystick, "Rotate")) * multiZ;
 
   if (!rclcpp::ok())
   {

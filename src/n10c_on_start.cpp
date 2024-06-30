@@ -134,6 +134,6 @@ void N10C::OnStart()
       {
           { guitar::AxisType_Key, GLFW_KEY_Q, false },
           { guitar::AxisType_Key, GLFW_KEY_E, true },
-          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_X, false },
+          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_Y, false },
       });
 }
