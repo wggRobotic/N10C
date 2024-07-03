@@ -11,8 +11,13 @@ colcon build
 source install/local_setup.bash
 ```
 ## Usage
-# ROS2 Run 
+### ROS2 Run 
 ```bash 
 ros2 run n10c n10c --ros-args -p image0:=/yourFrontCamTopic -p image1:=/yourRearCamTopic -p image2:=/yourMotionCaptureTopic -p image3:=/yourDepthCamTopic -p twist:=/yourTwistTopic -p barcode:=/yourBarcodeMsgsTopic -p enable:=/yourActivatingService
 
+```
+### ROS2 Launch
+
+```bash
+ros2 launch n10c n10.launch.py
 ```
