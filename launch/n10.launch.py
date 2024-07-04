@@ -9,11 +9,12 @@ def generate_launch_description():
             package='n10c',
             executable='n10c',
             parameters=[
-                {'image0': '/cam_pub'},
-                {'image1': '/n10/rear/color'},
-                {'image2': '/n10/cam_dif'},
-                {'enable': '/n10/enable'},
-                {'twist': '/cmd_vel'}
+                #{'image0': '/n10/intel/color/image_raw'},
+                #{'image1': '/n10/rear/color'},
+                #{'image2': '/n10/cam_dif'},
+                {'enable': '/eduard/enable'},
+                #{'twist': '/n10/cmd_vel'},
+                #{'barcode': '/n10/barcode'}
                ],
         ),
         Node(

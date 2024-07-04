@@ -14,10 +14,10 @@ void N10C::OnFrame()
   }
   else
   {
-    guitar::Joystick joystick = Input().GetJoystick(m_SelectedJoystick);
+    auto joystick = Input().GetJoystick(m_SelectedJoystick);
 
-    auto enable_pressed = joystick.Buttons[GLFW_GAMEPAD_BUTTON_A];
-    auto disable_pressed = joystick.Buttons[GLFW_GAMEPAD_BUTTON_B];
+    auto enable_pressed = joystick.buttons[GLFW_GAMEPAD_BUTTON_A];
+    auto disable_pressed = joystick.buttons[GLFW_GAMEPAD_BUTTON_B];
 
     if (!m_EnableButtonPressed && enable_pressed) { m_ShouldSetMotorStatusTrue = true; }
     else if (!m_DisableButtonPressed && disable_pressed) { m_ShouldSetMotorStatusFalse = true; }
@@ -26,9 +26,9 @@ void N10C::OnFrame()
     m_DisableButtonPressed = disable_pressed;
   }
 
-  m_TwistMessage.linear.y = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Horizontal")) * multiY;
-  m_TwistMessage.linear.x = NoStickDrift(-1* Input().GetAxis(m_SelectedJoystick, "Vertical")) * multiX;
-  m_TwistMessage.angular.z = NoStickDrift(-1* Input().GetAxis(m_SelectedJoystick, "Rotate")) * multiZ;
+  m_TwistMessage.linear.y = NoStickDrift(-Input().GetAxis(m_SelectedJoystick, "Horizontal")) * multiY;
+  m_TwistMessage.linear.x = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * multiX;
+  m_TwistMessage.angular.z = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Rotate")) * multiZ;
 
   if (!rclcpp::ok())
   {
