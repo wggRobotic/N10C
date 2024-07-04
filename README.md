@@ -1,5 +1,6 @@
 # N10C 
 N10C is the GUI for our Robot and uses the GUItar library (https://github.com/Scriptor25/GUItar).
+![N10C](https://github.com/wggRobotic/N10C/assets/123776648/4eff2922-9cdc-476f-9868-ce21768795a4)
 ## Installation 
 ```bash
 #getcode
