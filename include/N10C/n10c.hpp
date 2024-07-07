@@ -40,7 +40,9 @@ private:
   image_transport::Subscriber m_ImageSubscriber0;
   image_transport::Subscriber m_ImageSubscriber1;
   image_transport::Subscriber m_ImageSubscriber2;
+
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr m_BarcodeSubscriber;
+  std::map<std::string, bool> m_Barcodes;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr m_TwistPublisher;
   geometry_msgs::msg::Twist m_TwistMessage;

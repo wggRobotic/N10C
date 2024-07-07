@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<layout xmlns="ImGuiXML" id="main">
-    <dockspace />
+<layout id="main" dockspace="true">
+    <menubar>
+        <menu label="File">
+            <item shortcut="ctrl+alt+p" event="open_settings">Preferences</item>
+            <item shortcut="escape" event="exit">Exit</item>
+        </menu>
+    </menubar>
     <window name="Camera">
-        <combo label="Select Camera" preview="$selected_camera">
+        <combo label="Select Camera" preview="$get_selected_camera">
             <custom event="select_camera" />
         </combo>
         <image src="$camera" />
     </window>
     <window name="Arm" />
+    <window name="Barcodes">
+        <custom event="get_barcodes"/>
+    </window>
     <window name="Sensors" />
     <window name="General Information" />
     <window name="Controls">
-        <combo label="Select Joystick" preview="$selected_joystick">
+        <combo label="Select Joystick" preview="$get_selected_joystick">
             <custom event="select_joystick" />
         </combo>
     </window>
