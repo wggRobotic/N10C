@@ -121,7 +121,6 @@ void N10C::OnStart()
         for (const auto &[code, has_code] : m_Barcodes) { ImGui::TextUnformatted(code.c_str()); }
         return true;
       });
-
   Input().CreateAxis(
       "Horizontal",
       {

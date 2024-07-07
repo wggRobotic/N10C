@@ -11,7 +11,7 @@ def generate_launch_description():
             parameters=[
                 #{'image0': '/n10/intel/color/image_raw'},
                 #{'image1': '/n10/rear/color'},
-                #{'image2': '/n10/cam_dif'},
+                {'image2': '/n10/cam_dif'},
                 {'enable': '/eduard/enable'},
                 #{'twist': '/n10/cmd_vel'},
                 #{'barcode': '/n10/barcode'}
