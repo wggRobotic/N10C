@@ -6,7 +6,7 @@ void N10C::ImageCallback1(const ImageConstPtr &msg) { SetImage(1, msg->data, msg
 
 void N10C::ImageCallback2(const ImageConstPtr &msg) { SetImage(2, msg->data, msg->width, msg->height, msg->step, msg->encoding); }
 
-void N10C::BarcodeCallback(const StringConstPtr &msg) { std::cout << msg->data << std::endl; }
+void N10C::BarcodeCallback(const StringConstPtr &msg) { m_Barcodes[msg->data] = true; }
 
 void N10C::TimerCallback()
 {

@@ -13,6 +13,9 @@
         <image src="$camera" />
     </window>
     <window name="Arm" />
+    <window name="Barcodes">
+        <custom event="get_barcodes"/>
+    </window>
     <window name="Sensors" />
     <window name="General Information" />
     <window name="Controls">
