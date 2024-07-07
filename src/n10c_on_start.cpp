@@ -118,7 +118,7 @@ void N10C::OnStart()
       "get_barcodes", this,
       [this](const guitar::EventBase *) -> bool
       {
-        for (const auto &[code, has_code] : m_Barcodes) { ImGui::TextUnformatted(code.c_str()); }
+        for (const auto &[code, count] : m_Barcodes) ImGui::Text("%s: %lu", code.c_str(), count);
         return true;
       });
   Input().CreateAxis(
