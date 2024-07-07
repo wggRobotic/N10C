@@ -1,0 +1,4 @@
+[submodule "deps/GUItar"]
+	path = deps/GUItar
+	url = https://github.com/Scriptor25/GUItar.git
+	branch = dev
