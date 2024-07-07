@@ -1,3 +1,4 @@
+#include "imgui.h"
 #include <N10C/n10c.hpp>
 
 void N10C::OnStart()
@@ -119,6 +120,12 @@ void N10C::OnStart()
       [this](const guitar::EventBase *) -> bool
       {
         for (const auto &[code, count] : m_Barcodes) ImGui::Text("%s: %lu", code.c_str(), count);
+        if(m_Barcodes.size()>0){
+          if(ImGui::Button("Export")){
+          ++m_Barcodes["pressed"];
+          }
+        }
+        
         return true;
       });
   Input().CreateAxis(
