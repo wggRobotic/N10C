@@ -1,0 +1,23 @@
+launch:
+  - node:
+      pkg: n10c
+      exec: n10c
+      param:
+        - name: image0
+          value: /n10/test/image_raw
+        - name: image2
+          value: /n10/cam_dif
+        - name: image3
+          value: /eduard/enable
+  - node:
+      pkg: n10_cam_dif
+      exec: cam_dif
+  - node:
+      pkg: zbar_ros
+      exec: barcode_reader
+      name: n10_barcode_reader
+      remap:
+        - from: /image
+          to: /n10/intel/color
+        - from: /barcode
+          to: /n10/barcode
