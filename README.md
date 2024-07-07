@@ -19,6 +19,12 @@ colcon build
 source install/local_setup.bash
 ```
 
+Note: to update the submodules, use
+
+```bash
+git submodule update --remote --recursive --init
+```
+
 ## Usage
 
 ### ROS2 Run
