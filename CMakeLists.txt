@@ -9,6 +9,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+add_subdirectory(deps)
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
@@ -20,17 +22,7 @@ find_package(image_transport REQUIRED)
 find_package(compressed_image_transport REQUIRED)
 find_package(std_srvs REQUIRED)
 
-set(GLFW_BUILD_WAYLAND OFF)
-
-include(FetchContent)
-FetchContent_Declare(
-  GUItar
-  GIT_REPOSITORY https://github.com/Scriptor25/GUItar.git
-  GIT_TAG dev
-)
-FetchContent_MakeAvailable(GUItar)
-
-file(GLOB_RECURSE src src/**.cpp include/**.hpp)
+file(GLOB_RECURSE src src/*.cpp include/*.hpp)
 add_executable(n10c ${src})
 ament_target_dependencies(n10c PUBLIC
   rclcpp
@@ -43,7 +35,7 @@ ament_target_dependencies(n10c PUBLIC
   compressed_image_transport
   std_srvs
 )
-target_include_directories(n10c PUBLIC "include")
+target_include_directories(n10c PUBLIC include)
 target_link_libraries(n10c PUBLIC GUItar)
 
 install(
