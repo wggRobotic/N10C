@@ -1,5 +1,6 @@
 #include "imgui.h"
 #include <N10C/n10c.hpp>
+#include <string>
 
 void N10C::OnStart()
 {
@@ -120,12 +121,26 @@ void N10C::OnStart()
       [this](const guitar::EventBase *) -> bool
       {
         for (const auto &[code, count] : m_Barcodes) ImGui::Text("%s: %lu", code.c_str(), count);
-        if(m_Barcodes.size()>0){
-          if(ImGui::Button("Export")){
-          ++m_Barcodes["pressed"];
+        if (m_Barcodes.size() > 0)
+        {
+          if (ImGui::Button("Export"))
+          {
+            
+	          std::string barcodes;
+            for(const auto& pair : m_Barcodes)
+            {
+              std::string keyStr= pair.first;
+              std::string valueStr =std::to_string(pair.second);
+              std::string line = keyStr + ": " +valueStr;
+              barcodes += line + "\n";
+            }
+	          std::ofstream ausgabeDatei("N10_Barcode.txt");
+	          ausgabeDatei << barcodes;
+	          
+            ausgabeDatei.close();
           }
         }
-        
+
         return true;
       });
   Input().CreateAxis(
