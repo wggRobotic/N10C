@@ -25,6 +25,18 @@ Note: to update the submodules, use
 git submodule update --remote --recursive --init
 ```
 
+If you have trouble with using any joystick/gamepad related functionality, simply configure the project with cmake
+
+```bash
+cmake -B build -S .
+```
+
+and build the ```update_mappings``` target
+
+```bash
+cmake --build build --target update_mappings
+```
+
 ## Usage
 
 ### ROS2 Run
