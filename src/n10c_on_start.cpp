@@ -125,19 +125,19 @@ void N10C::OnStart()
         {
           if (ImGui::Button("Export"))
           {
-            
-	          std::string barcodes;
-            for(const auto& pair : m_Barcodes)
-            {
-              std::string keyStr= pair.first;
-              std::string valueStr =std::to_string(pair.second);
-              std::string line = keyStr + ": " +valueStr;
-              barcodes += line + "\n";
-            }
-	          std::ofstream ausgabeDatei("N10_Barcode.txt");
-	          ausgabeDatei << barcodes;
-	          
-            ausgabeDatei.close();
+
+	    std::string barcodes;
+	    for (const auto &pair : m_Barcodes)
+	    {
+	      std::string keyStr = pair.first;
+	      std::string valueStr = std::to_string(pair.second);
+	      std::string line = keyStr + ": " + valueStr;
+	      barcodes += line + "\n";
+	    }
+	    std::ofstream ausgabeDatei("N10_Barcode.txt");
+	    ausgabeDatei << barcodes;
+
+	    ausgabeDatei.close();
           }
         }
 

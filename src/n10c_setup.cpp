@@ -13,7 +13,7 @@ void N10C::SetupWithImageTransport(image_transport::ImageTransport &it)
   declare_parameter("barcode", "/n10/barcode");
   declare_parameter("twist", "/n10/twist");
   declare_parameter("enable", "/n10/enable");
-  declare_parameter("gripper","/n10/gripper");
+  declare_parameter("gripper", "/n10/gripper");
 
   get_parameter("image0", image0);
   get_parameter("image1", image1);
