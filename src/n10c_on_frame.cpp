@@ -15,10 +15,10 @@ void N10C::OnFrame()
   }
   else
   {
-    auto joystick = Input().GetJoystick(m_SelectedJoystick);
+    auto gamepad = Input().GetGamepad(m_SelectedJoystick);
 
-    auto enable_pressed = joystick.buttons[GLFW_GAMEPAD_BUTTON_A];
-    auto disable_pressed = joystick.buttons[GLFW_GAMEPAD_BUTTON_B];
+    auto enable_pressed = gamepad.buttons[GLFW_GAMEPAD_BUTTON_A];
+    auto disable_pressed = gamepad.buttons[GLFW_GAMEPAD_BUTTON_B];
 
     if (!m_EnableButtonPressed && enable_pressed) { m_ShouldSetMotorStatusTrue = true; }
     else if (!m_DisableButtonPressed && disable_pressed) { m_ShouldSetMotorStatusFalse = true; }
