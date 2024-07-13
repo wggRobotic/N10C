@@ -34,7 +34,7 @@ private:
   void ImageCallback2(const ImageConstPtr &);
   void ImageCallback3(const ImageConstPtr &);
   void ImageCallback4(const ImageConstPtr &);
-  void ImageGripperCallback(const ImageConstPtr &);
+  void ImageCallback5(const ImageConstPtr &);
   void BarcodeCallback(const StringConstPtr &);
   void TimerCallback();
 
@@ -49,9 +49,7 @@ private:
   image_transport::Subscriber m_ImageSubscriber2;
   image_transport::Subscriber m_ImageSubscriber3;
   image_transport::Subscriber m_ImageSubscriber4;
-
-
-  image_transport::Subscriber m_ImageGripperSubsciber;
+  image_transport::Subscriber m_ImageSubscriber5;
 
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr m_BarcodeSubscriber;
   std::map<std::string, size_t> m_Barcodes;

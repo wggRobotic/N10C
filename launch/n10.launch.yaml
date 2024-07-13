@@ -2,11 +2,27 @@ launch:
   - node:
       pkg: n10c
       exec: n10c
-      param:  #0 = front, 1 = rear, 2 = motion , 3 = depth, 4 = thermal
+      param: 
+        - name: image0
+          value: /n10/front/color
+        - name: image1
+          value: /n10/rear/color
+        - name: image2
+          value: /n10/motion/color
+        - name: image3
+          value: /n10/depth/color
         - name: image4
           value: /n10/thermal/color
-        - name: image_gripper
-          value: /n10/rear/color
+        - name: image5
+          value: /n10/intel/color/image_raw
+        - name: twist
+          value: /n10/cmd_vel
+        - name: gripper
+          value: /n10/gripper
+        - name: barcode
+          value: /n10/barcode
+        - name: enable
+          value: /n10/enable
   - node:
       pkg: n10_cam_dif
       exec: cam_dif

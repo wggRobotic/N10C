@@ -168,17 +168,34 @@ void N10C::OnStart()
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_LEFT_X, false },
       });
   Input().CreateAxis(
+      "UpDown",
+      {
+          { guitar::AxisType_Key, GLFW_KEY_LEFT_SHIFT, true },
+          { guitar::AxisType_Key, GLFW_KEY_LEFT_CONTROL, false },
+          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_Y, false },
+      });
+  Input().CreateAxis(
+      "Gripper",
+      {
+          { guitar::AxisType_Key, GLFW_KEY_LEFT_SHIFT, true },
+          { guitar::AxisType_Key, GLFW_KEY_LEFT_CONTROL, false },
+          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER, false },
+          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_LEFT_TRIGGER, true },
+
+      });
+  Input().CreateAxis(
       "Vertical",
       {
           { guitar::AxisType_Key, GLFW_KEY_W, false },
           { guitar::AxisType_Key, GLFW_KEY_S, true },
-          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_LEFT_Y, false },
+          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_LEFT_Y, true },
       });
   Input().CreateAxis(
       "Rotate",
       {
           { guitar::AxisType_Key, GLFW_KEY_Q, false },
           { guitar::AxisType_Key, GLFW_KEY_E, true },
-          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_Y, false },
+          { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_X, true },
       });
+      m_GripperMessage.data.resize(3);
 }

@@ -11,7 +11,14 @@ void N10C::OnFrame()
 
     if (Input().GetKeyRelease(GLFW_KEY_F)) { m_ShouldSetMotorStatusTrue = true; }
     if (Input().GetKeyRelease(GLFW_KEY_R)) { m_ShouldSetMotorStatusFalse = true; }
-    if (Input().GetKeyRelease(GLFW_KEY_T)) { m_ActivateGripper = !m_ActivateGripper; }
+    if (Input().GetKeyRelease(GLFW_KEY_T)) { m_ActivateGripper = false; }
+    if (Input().GetKeyRelease(GLFW_KEY_G)) {m_ActivateGripper = true; }
+    if (Input().GetKeyRelease(GLFW_KEY_B))
+    { 
+      m_GripperMessage.data.at(0) = 0;
+      m_GripperMessage.data.at(1) = 0;
+      m_GripperMessage.data.at(2) = 0;
+    }
   }
   else
   {
@@ -22,6 +29,17 @@ void N10C::OnFrame()
 
     if (!m_EnableButtonPressed && enable_pressed) { m_ShouldSetMotorStatusTrue = true; }
     else if (!m_DisableButtonPressed && disable_pressed) { m_ShouldSetMotorStatusFalse = true; }
+
+    if(gamepad.buttons[GLFW_GAMEPAD_BUTTON_Y]){m_ActivateGripper = true; }
+    if(gamepad.buttons[GLFW_GAMEPAD_BUTTON_X]){m_ActivateGripper = false; }
+    if (gamepad.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN])
+    { 
+      m_GripperMessage.data.at(0) = 0;
+      m_GripperMessage.data.at(1) = 0;
+      m_GripperMessage.data.at(2) = 0;
+    }
+
+
 
     m_EnableButtonPressed = enable_pressed;
     m_DisableButtonPressed = disable_pressed;
@@ -35,10 +53,9 @@ void N10C::OnFrame()
   }
   else
   {
-    m_GripperMessage.data.resize(3);
     m_GripperMessage.data.at(0) += NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * 0.25;
-    m_GripperMessage.data.at(1) += NoStickDrift(-Input().GetAxis(m_SelectedJoystick, "Horizontal")) * 0.25;
-    m_GripperMessage.data.at(2) += NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Rotate")) * 0.25;
+    m_GripperMessage.data.at(1) += NoStickDrift(-Input().GetAxis(m_SelectedJoystick, "UpDown")) * 0.25;
+    m_GripperMessage.data.at(2) += NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Gripper")) * 0.25;
   }
 
   if (!rclcpp::ok())
