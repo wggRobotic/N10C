@@ -27,6 +27,23 @@ void N10C::OnStart()
         return true;
       });
   Events().Register(
+      "gripper_camera", this,
+      [this](const guitar::EventBase *pEvent) -> bool
+      {
+        auto &event = *(guitar::ImageEvent *)pEvent;
+
+        if (m_SelectedCamera >= 0 && m_SelectedCamera < static_cast<int>(m_Images.size()))
+        {
+          const auto &image = m_Images[5];
+          event.Payload.Width = image.Width;
+          event.Payload.Height = image.Height;
+          event.Payload.TextureID = (void *)(intptr_t)image.Texture;
+          return true;
+        }
+
+        return false;
+      });
+  Events().Register(
       "select_camera", this,
       [this](const guitar::EventBase *) -> bool
       {

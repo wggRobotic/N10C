@@ -12,7 +12,9 @@
         </combo>
         <image src="$camera" />
     </window>
-    <window name="Arm" />
+    <window name="Arm">
+        <image src="$gripper_camera" />
+    </window>
     <window name="Barcodes">
         <custom event="get_barcodes"/>
     </window>

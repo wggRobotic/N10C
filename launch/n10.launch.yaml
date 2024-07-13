@@ -2,13 +2,11 @@ launch:
   - node:
       pkg: n10c
       exec: n10c
-      param:
-        - name: image0
-          value: /n10/test/image_raw
-        - name: image2
-          value: /n10/cam_dif
-        - name: image3
-          value: /eduard/enable
+      param:  #0 = front, 1 = rear, 2 = motion , 3 = depth, 4 = thermal
+        - name: image4
+          value: /n10/thermal/color
+        - name: image_gripper
+          value: /n10/rear/color
   - node:
       pkg: n10_cam_dif
       exec: cam_dif

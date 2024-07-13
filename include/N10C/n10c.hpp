@@ -3,6 +3,7 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <guitar/application.hpp>
 #include <image_transport/image_transport.hpp>
+#include <image_transport/subscriber.hpp>
 #include <rclcpp/publisher.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/image.hpp>
@@ -31,6 +32,9 @@ private:
   void ImageCallback0(const ImageConstPtr &);
   void ImageCallback1(const ImageConstPtr &);
   void ImageCallback2(const ImageConstPtr &);
+  void ImageCallback3(const ImageConstPtr &);
+  void ImageCallback4(const ImageConstPtr &);
+  void ImageGripperCallback(const ImageConstPtr &);
   void BarcodeCallback(const StringConstPtr &);
   void TimerCallback();
 
@@ -43,6 +47,11 @@ private:
   image_transport::Subscriber m_ImageSubscriber0;
   image_transport::Subscriber m_ImageSubscriber1;
   image_transport::Subscriber m_ImageSubscriber2;
+  image_transport::Subscriber m_ImageSubscriber3;
+  image_transport::Subscriber m_ImageSubscriber4;
+
+
+  image_transport::Subscriber m_ImageGripperSubsciber;
 
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr m_BarcodeSubscriber;
   std::map<std::string, size_t> m_Barcodes;
@@ -63,7 +72,7 @@ private:
   std::vector<guitar::Image> m_Images;
 
   int m_SelectedCamera = 0;
-  const std::vector<std::string> m_Cameras{ "Front", "Rear", "Motion", "Depth" };
+  const std::vector<std::string> m_Cameras{ "Front", "Rear", "Motion", "Depth","Thermal","Gripper" };
 
   int m_SelectedJoystick = -1;
 
