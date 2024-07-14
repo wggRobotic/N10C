@@ -142,22 +142,29 @@ void N10C::OnStart()
         {
           if (ImGui::Button("Export"))
           {
-
-	    std::string barcodes;
-	    for (const auto &pair : m_Barcodes)
-	    {
-	      std::string keyStr = pair.first;
-	      std::string valueStr = std::to_string(pair.second);
-	      std::string line = keyStr + ": " + valueStr;
-	      barcodes += line + "\n";
-	    }
-	    std::ofstream ausgabeDatei("N10_Barcode.txt");
-	    ausgabeDatei << barcodes;
-
-	    ausgabeDatei.close();
+            std::string barcodes;
+            for (const auto &pair : m_Barcodes)
+            {
+              std::string keyStr = pair.first;
+              std::string valueStr = std::to_string(pair.second);
+              std::string line = keyStr + ": " + valueStr;
+              barcodes += line + "\n";
+            }
+            std::ofstream outputFile("N10_Barcode.txt");
+            outputFile << barcodes;
+            outputFile.close();
           }
         }
 
+        return true;
+      });
+  Events().Register(
+      "get_values", this,
+      [this](const guitar::EventBase *) -> bool
+      {
+        ImGui::Text("Driving: \n\tX:%f\n\tY:%f\n\tZ:%f",m_TwistMessage.linear.x,m_TwistMessage.linear.y,m_TwistMessage.angular.z);
+        ImGui::SameLine();
+        ImGui::Text("Arm: \n\tX:%f\n\tY:%f\n\tG:%f",m_GripperMessage.data.at(0),m_GripperMessage.data.at(1),m_GripperMessage.data.at(2));
         return true;
       });
   Input().CreateAxis(
@@ -197,5 +204,5 @@ void N10C::OnStart()
           { guitar::AxisType_Key, GLFW_KEY_E, true },
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_X, true },
       });
-      m_GripperMessage.data.resize(3);
+  m_GripperMessage.data.resize(3);
 }
