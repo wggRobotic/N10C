@@ -15,7 +15,7 @@ def generate_launch_description():
                 'image3': '/n10/depth/color',
                 'image4': '/n10/thermal/color',
                 'image5': '/n10/intel/color/image_raw',
-                # 'twist': '/n10/cmd_vel',
+                'twist': '/n10/cmd_vel',
                 # 'gripper': '/n10/gripper',
                 # 'barcode': '/n10/barcode',
                 # 'enable': '/n10/enable',
@@ -24,15 +24,14 @@ def generate_launch_description():
         Node(
             package='n10_cam_dif',
             executable='cam_dif',
-            name='cam_dif',
-            parameters=[]
+            name='cam_dif'
         ),
         Node(
             package='zbar_ros',
             executable='barcode_reader',
             name='n10_barcode_reader',
             remappings=[
-                ('/image', '/n10/intel/color'),
+                ('/image', '/n10/intel/color/image_raw'),
                 ('/barcode', '/n10/barcode')
             ]
         )
