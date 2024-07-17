@@ -108,15 +108,22 @@ void N10C::SetImage(size_t index, const std::vector<uint8_t> &data, uint32_t wid
     return;
   }
 
-  if (index == 0 && m_ActivatedLine)
-  {
-    draw_horizontal_line(pixels, width, height, height - 100, 5, 0xff0000ff);
-  }
+  
+
+  
 
   int rotations = 0;
   if (index == 4)
   {
     rotations = 3; // Example: Rotate 180 degrees
+  }
+
+  if(index == 0){
+    rotations = 2;
+  }
+  if (index == 0 && m_ActivatedLine)
+  { //40px = 26cm
+    draw_horizontal_line(pixels, width, height,  40, 5, 0xff0000ff);
   }
 
   rotate_image(pixels, output_pixels, width, height, rotations);

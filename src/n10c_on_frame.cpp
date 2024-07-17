@@ -69,6 +69,7 @@ void N10C::OnFrame()
     m_GripperMessage.data.at(0) = addValueRangeCut(0, 0.27f,(NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * 0.001f), m_GripperMessage.data.at(0));
     m_GripperMessage.data.at(1) = addValueRangeCut(-0.14f, 0.27f,(NoStickDrift(Input().GetAxis(m_SelectedJoystick, "UpDown")) * 0.001f), m_GripperMessage.data.at(1));
     m_GripperMessage.data.at(2) = addValueRangeCut(0, 1, (NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Gripper")) * 0.001f), m_GripperMessage.data.at(2));
+    m_GripperMessage.data.at(3) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift(Input().GetAxis(m_SelectedJoystick, "gripperAngle")) * 0.001f), m_GripperMessage.data.at(3));
   }
 
   if (!rclcpp::ok())

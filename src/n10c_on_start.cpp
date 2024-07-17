@@ -166,7 +166,7 @@ void N10C::OnStart()
       {
         ImGui::Text("Driving: \n\tX:%f\n\tY:%f\n\tZ:%f", m_TwistMessage.linear.x, m_TwistMessage.linear.y, m_TwistMessage.angular.z);
         ImGui::SameLine();
-        ImGui::Text("Arm: \n\tX:%f\n\tY:%f\n\tG:%f", m_GripperMessage.data.at(0), m_GripperMessage.data.at(1), m_GripperMessage.data.at(2));
+        ImGui::Text("Arm: \n\tX:%f\n\tY:%f\n\tD:%f\n\tG:%f", m_GripperMessage.data.at(0), m_GripperMessage.data.at(1), m_GripperMessage.data.at(2),m_GripperMessage.data.at(3));
         return true;
       });
   Input().CreateAxis(
@@ -192,6 +192,15 @@ void N10C::OnStart()
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_LEFT_TRIGGER, true },
 
       });
+    Input().CreateAxis(
+      "gripperAngle",
+      {
+        {guitar::AxisType_Key,GLFW_KEY_Z,true},
+        {guitar::AxisType_Key,GLFW_KEY_C,false},
+        {guitar::AxisType_Key,GLFW_GAMEPAD_BUTTON_DPAD_RIGHT,false},
+        {guitar::AxisType_Key,GLFW_GAMEPAD_BUTTON_DPAD_LEFT,true}
+
+      });
   Input().CreateAxis(
       "Vertical",
       {
@@ -206,8 +215,10 @@ void N10C::OnStart()
           { guitar::AxisType_Key, GLFW_KEY_E, true },
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_X, true },
       });
-  m_GripperMessage.data.resize(3);
+  m_GripperMessage.data.resize(4);
   m_GripperMessage.data.at(0)=0.11;
   m_GripperMessage.data.at(1)=0.10;
-  m_GripperMessage.data.at(2)= -1;
+  m_GripperMessage.data.at(2)= 0;
+  m_GripperMessage.data.at(3)= -1;
+
 }
