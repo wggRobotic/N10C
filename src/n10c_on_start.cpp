@@ -4,6 +4,8 @@
 
 void N10C::OnStart()
 {
+  ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
+
   Events().Register(
       "on_key", this,
       [this](const guitar::EventBase *pEvent) -> bool
@@ -142,17 +144,17 @@ void N10C::OnStart()
         {
           if (ImGui::Button("Export"))
           {
-            std::string barcodes;
-            for (const auto &pair : m_Barcodes)
-            {
-              std::string keyStr = pair.first;
-              std::string valueStr = std::to_string(pair.second);
-              std::string line = keyStr + ": " + valueStr;
-              barcodes += line + "\n";
-            }
-            std::ofstream outputFile("N10_Barcode.txt");
-            outputFile << barcodes;
-            outputFile.close();
+	    std::string barcodes;
+	    for (const auto &pair : m_Barcodes)
+	    {
+	      std::string keyStr = pair.first;
+	      std::string valueStr = std::to_string(pair.second);
+	      std::string line = keyStr + ": " + valueStr;
+	      barcodes += line + "\n";
+	    }
+	    std::ofstream outputFile("N10_Barcode.txt");
+	    outputFile << barcodes;
+	    outputFile.close();
           }
         }
 
@@ -162,9 +164,9 @@ void N10C::OnStart()
       "get_values", this,
       [this](const guitar::EventBase *) -> bool
       {
-        ImGui::Text("Driving: \n\tX:%f\n\tY:%f\n\tZ:%f",m_TwistMessage.linear.x,m_TwistMessage.linear.y,m_TwistMessage.angular.z);
+        ImGui::Text("Driving: \n\tX:%f\n\tY:%f\n\tZ:%f", m_TwistMessage.linear.x, m_TwistMessage.linear.y, m_TwistMessage.angular.z);
         ImGui::SameLine();
-        ImGui::Text("Arm: \n\tX:%f\n\tY:%f\n\tG:%f",m_GripperMessage.data.at(0),m_GripperMessage.data.at(1),m_GripperMessage.data.at(2));
+        ImGui::Text("Arm: \n\tX:%f\n\tY:%f\n\tG:%f", m_GripperMessage.data.at(0), m_GripperMessage.data.at(1), m_GripperMessage.data.at(2));
         return true;
       });
   Input().CreateAxis(
@@ -177,15 +179,15 @@ void N10C::OnStart()
   Input().CreateAxis(
       "UpDown",
       {
-          { guitar::AxisType_Key, GLFW_KEY_LEFT_SHIFT, true },
-          { guitar::AxisType_Key, GLFW_KEY_LEFT_CONTROL, false },
+          { guitar::AxisType_Key, GLFW_KEY_LEFT_SHIFT, false },
+          { guitar::AxisType_Key, GLFW_KEY_LEFT_CONTROL, true },
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_Y, false },
       });
   Input().CreateAxis(
       "Gripper",
       {
-          { guitar::AxisType_Key, GLFW_KEY_LEFT_SHIFT, true },
-          { guitar::AxisType_Key, GLFW_KEY_LEFT_CONTROL, false },
+          { guitar::AxisType_Key, GLFW_KEY_Q, true },
+          { guitar::AxisType_Key, GLFW_KEY_E, false },
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER, false },
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_LEFT_TRIGGER, true },
 
@@ -205,4 +207,7 @@ void N10C::OnStart()
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_RIGHT_X, true },
       });
   m_GripperMessage.data.resize(3);
+  m_GripperMessage.data.at(0)=0.11;
+  m_GripperMessage.data.at(1)=0.10;
+  m_GripperMessage.data.at(2)= -1;
 }

@@ -11,14 +11,14 @@ def generate_launch_description():
             parameters=[{
                 'image0': '/n10/front/color',
                 'image1': '/n10/rear/color',
-                'image2': '/n10/motion/color',
+                'image2': '/n10/cam_dif',
                 'image3': '/n10/depth/color',
                 'image4': '/n10/thermal/color',
                 'image5': '/n10/intel/color/image_raw',
                 'twist': '/n10/cmd_vel',
-                # 'gripper': '/n10/gripper',
+                'gripper': '/n10/arm_state',
                 # 'barcode': '/n10/barcode',
-                # 'enable': '/n10/enable',
+                'enable': '/eduard/enable',
             }]
         ),
         Node(

@@ -39,7 +39,7 @@ void N10C::SetupWithImageTransport(image_transport::ImageTransport &it)
   m_BarcodeSubscriber = create_subscription<std_msgs::msg::String>(barcode.as_string(), 10, std::bind(&N10C::BarcodeCallback, this, std::placeholders::_1));
 
   m_TwistPublisher = create_publisher<geometry_msgs::msg::Twist>(velocity.as_string(), 10);
-  m_GripperPublisher = create_publisher<std_msgs::msg::Float64MultiArray>(gripper.as_string(), 10);
+  m_GripperPublisher = create_publisher<std_msgs::msg::Float32MultiArray>(gripper.as_string(), 10);
 
   m_EnableMotorClient = create_client<std_srvs::srv::SetBool>(enable.as_string());
 

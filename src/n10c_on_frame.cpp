@@ -1,8 +1,21 @@
 #include <N10C/n10c.hpp>
+static float addValueRangeCut(float min, float max, float delta, float& value ){
+  if(delta + value > max){
+    return max;
+  }else if(delta + value < min){
+    return min;
+  }else{
+    return value + delta;
+  }
+}
 
 void N10C::OnFrame()
 {
   constexpr float multiX = 1.0f, multiY = 1.0f, multiZ = 0.25f;
+
+  if (Input().GetKeyRelease(GLFW_KEY_L)) { m_ActivatedLine = true; }
+  if (Input().GetKeyRelease(GLFW_KEY_O)) { m_ActivatedLine = false; }
+
 
   if (m_SelectedJoystick < 0)
   {
@@ -15,9 +28,9 @@ void N10C::OnFrame()
     if (Input().GetKeyRelease(GLFW_KEY_G)) {m_ActivateGripper = true; }
     if (Input().GetKeyRelease(GLFW_KEY_B))
     { 
-      m_GripperMessage.data.at(0) = 0;
-      m_GripperMessage.data.at(1) = 0;
-      m_GripperMessage.data.at(2) = 0;
+      m_GripperMessage.data.at(0) = 0.11;
+      m_GripperMessage.data.at(1) = 0.10;
+      m_GripperMessage.data.at(2) = -1;
     }
   }
   else
@@ -34,9 +47,9 @@ void N10C::OnFrame()
     if(gamepad.buttons[GLFW_GAMEPAD_BUTTON_X]){m_ActivateGripper = false; }
     if (gamepad.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN])
     { 
-      m_GripperMessage.data.at(0) = 0;
-      m_GripperMessage.data.at(1) = 0;
-      m_GripperMessage.data.at(2) = 0;
+      m_GripperMessage.data.at(0) = 0.11;
+      m_GripperMessage.data.at(1) = 0.10;
+      m_GripperMessage.data.at(2) = -1;
     }
 
 
@@ -53,9 +66,9 @@ void N10C::OnFrame()
   }
   else
   {
-    m_GripperMessage.data.at(0) += NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * 0.25;
-    m_GripperMessage.data.at(1) += NoStickDrift(-Input().GetAxis(m_SelectedJoystick, "UpDown")) * 0.25;
-    m_GripperMessage.data.at(2) += NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Gripper")) * 0.25;
+    m_GripperMessage.data.at(0) = addValueRangeCut(0, 0.27f,(NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * 0.001f), m_GripperMessage.data.at(0));
+    m_GripperMessage.data.at(1) = addValueRangeCut(-0.14f, 0.27f,(NoStickDrift(Input().GetAxis(m_SelectedJoystick, "UpDown")) * 0.001f), m_GripperMessage.data.at(1));
+    m_GripperMessage.data.at(2) = addValueRangeCut(0, 1, (NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Gripper")) * 0.001f), m_GripperMessage.data.at(2));
   }
 
   if (!rclcpp::ok())

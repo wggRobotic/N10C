@@ -24,6 +24,6 @@
         <combo label="Select Joystick" preview="$get_selected_joystick">
             <custom event="select_joystick" />
         </combo>
-            <custom event = "get_values"/>
+        <custom event = "get_values"/>
     </window>
 </layout>

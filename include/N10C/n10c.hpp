@@ -7,7 +7,7 @@
 #include <rclcpp/publisher.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/image.hpp>
-#include <std_msgs/msg/float64_multi_array.hpp>
+#include <std_msgs/msg/float32_multi_array.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <std_srvs/srv/set_bool.hpp>
 #include <vector>
@@ -55,9 +55,10 @@ private:
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr m_TwistPublisher;
   geometry_msgs::msg::Twist m_TwistMessage;
-  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr m_GripperPublisher;
-  std_msgs::msg::Float64MultiArray m_GripperMessage;
+  rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr m_GripperPublisher;
+  std_msgs::msg::Float32MultiArray m_GripperMessage;
   bool m_ActivateGripper = false;
+  bool m_ActivatedLine = false;
 
   rclcpp::Client<std_srvs::srv::SetBool>::SharedPtr m_EnableMotorClient;
   bool m_SetMotorStatusLock = false;
