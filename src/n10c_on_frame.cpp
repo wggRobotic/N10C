@@ -29,18 +29,19 @@ void N10C::OnFrame()
     if (Input().GetKeyRelease(GLFW_KEY_G)) {m_ActivateGripper = true; }
 
     if( Input().GetKeyRelease(GLFW_KEY_Z)){
-      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( -1) * 0.01f), m_GripperMessage.data.at(2));
+      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( -1) * 0.05f), m_GripperMessage.data.at(2));
     }else if(Input().GetKeyRelease(GLFW_KEY_C)){
-        m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 1) * 0.01f), m_GripperMessage.data.at(2));
+        m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 1) * 0.05f), m_GripperMessage.data.at(2));
     }else{
-      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 0) * 0.01f), m_GripperMessage.data.at(2));
+      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 0) * 0.05f), m_GripperMessage.data.at(2));
     }
 
     if (Input().GetKeyRelease(GLFW_KEY_B))
     { 
       m_GripperMessage.data.at(0) = 0.11;
       m_GripperMessage.data.at(1) = 0.10;
-      m_GripperMessage.data.at(2) = -1;
+      m_GripperMessage.data.at(2) = -0.5*3.14;
+      m_GripperMessage.data.at(3)= 0;
     }
   }
   else
@@ -67,7 +68,7 @@ void N10C::OnFrame()
     { 
       m_GripperMessage.data.at(0) = 0.06;
       m_GripperMessage.data.at(1) = 0.10;
-      m_GripperMessage.data.at(2) = -1;
+      m_GripperMessage.data.at(2) = -0.5*3.14;
       m_GripperMessage.data.at(3) = 0;
     }
 
