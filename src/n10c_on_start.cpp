@@ -192,15 +192,6 @@ void N10C::OnStart()
           { guitar::AxisType_Axis, GLFW_GAMEPAD_AXIS_LEFT_TRIGGER, true },
 
       });
-    Input().CreateAxis(
-      "gripperAngle",
-      {
-        {guitar::AxisType_Key,GLFW_KEY_Z,true},
-        {guitar::AxisType_Key,GLFW_KEY_C,false},
-        {guitar::AxisType_Key,GLFW_GAMEPAD_BUTTON_DPAD_RIGHT,false},
-        {guitar::AxisType_Key,GLFW_GAMEPAD_BUTTON_DPAD_LEFT,true}
-
-      });
   Input().CreateAxis(
       "Vertical",
       {

@@ -42,14 +42,22 @@ void N10C::OnFrame()
 
     if (!m_EnableButtonPressed && enable_pressed) { m_ShouldSetMotorStatusTrue = true; }
     else if (!m_DisableButtonPressed && disable_pressed) { m_ShouldSetMotorStatusFalse = true; }
+    if( gamepad.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]){
+      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( -1) * 0.01f), m_GripperMessage.data.at(2));
+    }else if(gamepad.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]){
+        m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 1) * 0.01f), m_GripperMessage.data.at(2));
+    }else{
+      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 0) * 0.01f), m_GripperMessage.data.at(2));
+    }
 
     if(gamepad.buttons[GLFW_GAMEPAD_BUTTON_Y]){m_ActivateGripper = true; }
     if(gamepad.buttons[GLFW_GAMEPAD_BUTTON_X]){m_ActivateGripper = false; }
     if (gamepad.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN])
     { 
-      m_GripperMessage.data.at(0) = 0.11;
+      m_GripperMessage.data.at(0) = 0.06;
       m_GripperMessage.data.at(1) = 0.10;
       m_GripperMessage.data.at(2) = -1;
+      m_GripperMessage.data.at(3) = 0;
     }
 
 
@@ -57,6 +65,8 @@ void N10C::OnFrame()
     m_EnableButtonPressed = enable_pressed;
     m_DisableButtonPressed = disable_pressed;
   }
+
+  
 
   if (!m_ActivateGripper)
   {
@@ -68,8 +78,7 @@ void N10C::OnFrame()
   {
     m_GripperMessage.data.at(0) = addValueRangeCut(0, 0.27f,(NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * 0.001f), m_GripperMessage.data.at(0));
     m_GripperMessage.data.at(1) = addValueRangeCut(-0.14f, 0.27f,(NoStickDrift(Input().GetAxis(m_SelectedJoystick, "UpDown")) * 0.001f), m_GripperMessage.data.at(1));
-    m_GripperMessage.data.at(2) = addValueRangeCut(0, 1, (NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Gripper")) * 0.001f), m_GripperMessage.data.at(2));
-    m_GripperMessage.data.at(3) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift(Input().GetAxis(m_SelectedJoystick, "gripperAngle")) * 0.001f), m_GripperMessage.data.at(3));
+    m_GripperMessage.data.at(3) = addValueRangeCut(0, 1, (NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Gripper")) * 0.001f), m_GripperMessage.data.at(3));
   }
 
   if (!rclcpp::ok())

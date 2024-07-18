@@ -9,10 +9,10 @@ def generate_launch_description():
             executable='n10c',
             name='n10c',
             parameters=[{
-                'image0': '/n10/front/color',
-                'image1': '/n10/rear/color',
+                #'image0': '/n10/front/color',
+                #'image1': '/n10/rear/color',
                 'image2': '/n10/cam_dif',
-                'image3': '/n10/depth/color',
+                #'image3': '/n10/depth/color',
                 'image4': '/n10/thermal/color',
                 'image5': '/n10/intel/color/image_raw',
                 'twist': '/n10/cmd_vel',
