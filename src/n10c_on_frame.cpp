@@ -1,3 +1,4 @@
+#include "imgui.h"
 #include <N10C/n10c.hpp>
 static float addValueRangeCut(float min, float max, float delta, float& value ){
   if(delta + value > max){
@@ -26,6 +27,15 @@ void N10C::OnFrame()
     if (Input().GetKeyRelease(GLFW_KEY_R)) { m_ShouldSetMotorStatusFalse = true; }
     if (Input().GetKeyRelease(GLFW_KEY_T)) { m_ActivateGripper = false; }
     if (Input().GetKeyRelease(GLFW_KEY_G)) {m_ActivateGripper = true; }
+
+    if( Input().GetKeyRelease(GLFW_KEY_Z)){
+      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( -1) * 0.01f), m_GripperMessage.data.at(2));
+    }else if(Input().GetKeyRelease(GLFW_KEY_C)){
+        m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 1) * 0.01f), m_GripperMessage.data.at(2));
+    }else{
+      m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( 0) * 0.01f), m_GripperMessage.data.at(2));
+    }
+
     if (Input().GetKeyRelease(GLFW_KEY_B))
     { 
       m_GripperMessage.data.at(0) = 0.11;
@@ -42,6 +52,7 @@ void N10C::OnFrame()
 
     if (!m_EnableButtonPressed && enable_pressed) { m_ShouldSetMotorStatusTrue = true; }
     else if (!m_DisableButtonPressed && disable_pressed) { m_ShouldSetMotorStatusFalse = true; }
+
     if( gamepad.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT]){
       m_GripperMessage.data.at(2) = addValueRangeCut(-0.5*3.14, 0.5*3.14, (NoStickDrift( -1) * 0.01f), m_GripperMessage.data.at(2));
     }else if(gamepad.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT]){
