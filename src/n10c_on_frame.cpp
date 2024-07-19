@@ -12,10 +12,20 @@ static float addValueRangeCut(float min, float max, float delta, float& value ){
 
 void N10C::OnFrame()
 {
-  constexpr float multiX = 1.0f, multiY = 1.0f, multiZ = 0.25f;
+   
 
   if (Input().GetKeyRelease(GLFW_KEY_L)) { m_ActivatedLine = true; }
   if (Input().GetKeyRelease(GLFW_KEY_O)) { m_ActivatedLine = false; }
+  if (Input().GetKeyRelease(GLFW_KEY_I)) 
+  {
+    m_multiX = m_multiX + 0.2f;
+    m_multiY = m_multiY + 0.2f;
+  }
+  if (Input().GetKeyRelease(GLFW_KEY_K)) 
+  { 
+    m_multiX -= 0.2f;
+    m_multiY -= 0.2f;
+  }
 
 
   if (m_SelectedJoystick < 0)
@@ -82,9 +92,9 @@ void N10C::OnFrame()
 
   if (!m_ActivateGripper)
   {
-    m_TwistMessage.linear.x = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * multiX;
-    m_TwistMessage.linear.y = NoStickDrift(-Input().GetAxis(m_SelectedJoystick, "Horizontal")) * multiY;
-    m_TwistMessage.angular.z = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Rotate")) * multiZ;
+    m_TwistMessage.linear.x = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Vertical")) * m_multiX;
+    m_TwistMessage.linear.y = NoStickDrift(-Input().GetAxis(m_SelectedJoystick, "Horizontal")) * m_multiY;
+    m_TwistMessage.angular.z = NoStickDrift(Input().GetAxis(m_SelectedJoystick, "Rotate")) * m_multiZ;
   }
   else
   {

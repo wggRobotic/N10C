@@ -76,4 +76,5 @@ private:
 
   bool m_EnableButtonPressed = false;
   bool m_DisableButtonPressed = false;
+  float m_multiX = 1.0f, m_multiY = 1.0f, m_multiZ = 0.25f;
 };
