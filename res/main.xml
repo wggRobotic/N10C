@@ -16,7 +16,7 @@
         <image src="$gripper_camera" />
     </window>
     <window name="Barcodes">
-        <custom event="get_barcodes"/>
+        <custom event="get_barcodes" />
     </window>
     <window name="Sensors" />
     <window name="General Information" />
@@ -24,6 +24,33 @@
         <combo label="Select Joystick" preview="$get_selected_joystick">
             <custom event="select_joystick" />
         </combo>
-        <custom event = "get_values"/>
+        <group>
+            <text>Drive:</text>
+            <text>X:</text>
+            <sameline />
+            <text>$get_twist_linear_x</text>
+            <text>Y:</text>
+            <sameline />
+            <text>$get_twist_linear_y</text>
+            <text>Z:</text>
+            <sameline />
+            <text>$get_twist_angular_z</text>
+        </group>
+        <sameline />
+        <group>
+            <text>Arm:</text>
+            <text>X:</text>
+            <sameline />
+            <text>$get_gripper_0</text>
+            <text>Y:</text>
+            <sameline />
+            <text>$get_gripper_1</text>
+            <text>D:</text>
+            <sameline />
+            <text>$get_gripper_2</text>
+            <text>G:</text>
+            <sameline />
+            <text>$get_gripper_3</text>
+        </group>
     </window>
 </layout>
