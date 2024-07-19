@@ -19,6 +19,31 @@ colcon build
 source install/local_setup.bash
 ```
 
+Note: to update the submodules, use
+
+```bash
+git submodule update --remote --recursive --init
+```
+
+If you have trouble with using any joystick/gamepad related functionality, simply configure the project with cmake
+
+```bash
+cmake -B build -S .
+```
+
+and build the ```update_mappings``` target
+
+```bash
+cmake --build build --target update_mappings
+```
+
+If the joystick still is not detected as a gamepad, do following steps:
+
+1. Open [mappings.h](deps/GUItar/Dependencies/GLFW/src/mappings.h), search for your controller name/guid and copy the whole line
+2. Open [mappings.h.in](deps/GUItar/Dependencies/GLFW/src/mappings.h.in) and paste the line from mappings.h
+3. Copy and paste the guid from the command line output from n10c into the mappings.h.in under the system macro you're using, e.g. Linux
+4. Rebuild with colcon
+
 ## Usage
 
 ### ROS2 Run
